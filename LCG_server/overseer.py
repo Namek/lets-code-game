@@ -83,6 +83,6 @@ class Overseer(object):
         else:
             i = self._players.index(player)
             self._players[i] = None
-            # Notify others
-            for p in self.players:
-                p.send('playerLeft', {'nickname': player.name})
+        # Notify others
+        for p in self.players:
+            p.send('playerLeft', {'nickname': player.name})
