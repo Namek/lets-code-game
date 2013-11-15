@@ -77,6 +77,9 @@ class Overseer(object):
             if self.current_player:
                 break
         self.current_player.action_points = 10
+        for p in [p for p in self.players if p is not self.current_player]:
+            p.send('nextPlayer', {'nickname': self.current_player.name})
+        self.current_player.send('yourTurn', self.current_player.state)
 
     def remove_player(self, player):
         if not self.game_started:

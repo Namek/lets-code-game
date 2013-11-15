@@ -100,6 +100,7 @@ class Handlers(object):
         }
         for p in [p for p in self.ovrs.players if p is not who]:
             p.send('move', to_send)
+        who.send('moveDone', who.state)
 
     def build_mine(self, who, trujkont):
         self._build(who, trujkont, 'mine')
