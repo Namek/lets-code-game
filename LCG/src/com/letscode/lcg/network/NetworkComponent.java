@@ -101,6 +101,9 @@ public class NetworkComponent {
 		}
 	}
 	
+	///////////////////////////////////
+	// Player list handling
+	///////////////////////////////////
 	@Handler
 	private void playerJoinedHandler(PlayerJoinedMessage message) {
 		players.add(message.nickname);
@@ -116,6 +119,17 @@ public class NetworkComponent {
 		players = message.players;
 	}
 	
+	public void update() {
+		while (listener.hasMessages()) {
+			MessageEnvelope envelope = listener.dequeueMessage();
+			Events.publishEvent(envelope.message);
+		}
+	}
+	
+	public ArrayList<String> getPlayers() {
+		return players;
+	}
+	
 	public void start(String host, int port) {
 		Socket socket = Gdx.net.newClientSocket(Protocol.TCP, host, port, null);
 		listener = new MessageListener(socket.getInputStream());
@@ -125,19 +139,16 @@ public class NetworkComponent {
 		sender.start();
 	}
 	
-	public void update() {
-		while (listener.hasMessages()) {
-			MessageEnvelope envelope = listener.dequeueMessage();
-			Events.publishEvent(envelope.message);
-		}
-	}
 	
+	///////////////////////////////////
+	// Message sending
+	///////////////////////////////////
 	public void sendHandshakeMessage(String nickname) {
 		sender.enqueueMessage(MessageFactory.createHandshakeMessage(nickname));
 	}
 	
-	public ArrayList<String> getPlayers() {
-		return players;
+	public void sendGameStartMessage() {
+		sender.enqueueMessage(MessageFactory.createGameStartMessage());
 	}
 	
 	private ArrayList<String> players;
