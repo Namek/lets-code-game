@@ -20,6 +20,29 @@ public class Map {
 		return fields.length;
 	}
 	
+	public boolean canAttackField(String attacker, int row, int col) {
+		Field target = fields[row][col];
+		if (target.isOwnedBy(attacker)) return false;
+		
+		int rightAdj = col + 1;
+		int leftAdj = col - 1;
+		boolean canAttackAdjacentHorz = false;
+		if (leftAdj >= 0) {
+			canAttackAdjacentHorz = fields[row][leftAdj].isOwnedBy(attacker); 
+		}
+		if (rightAdj < getWidth()) {
+			canAttackAdjacentHorz |= fields[row][rightAdj].isOwnedBy(attacker);
+		}
+		
+		boolean canAttackAdjacentVert = false;
+		int vertAdj = (isUpperTriangle(row, col) ? row - 1 : row + 1);
+		if (vertAdj < getWidth() && vertAdj >= 0) {
+			canAttackAdjacentVert = fields[vertAdj][col].isOwnedBy(attacker);
+		}
+		
+		return canAttackAdjacentHorz || canAttackAdjacentVert;
+	}
+	
 	public static boolean isUpperTriangle(int rowIndex, int colIndex) {
 		return rowIndex % 2 != colIndex % 2;
 	}
