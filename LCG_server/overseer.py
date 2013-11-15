@@ -57,7 +57,7 @@ class Overseer(object):
 
     @property
     def players(self):
-        return [p for p in self._players if p]
+        return [p for p in self._players if p and p.name]
 
     @property
     def current_player(self):
@@ -70,12 +70,12 @@ class Overseer(object):
     def next_player(self):
         if self.current_player_index is None:
             self.current_player_index = 0
-            return
-        while self.current_player:
-            i = (self.current_player_index+1) % len(self._players)
-            self.current_player_index = i
-            if self.current_player:
-                break
+        else:
+            while self.current_player:
+                i = (self.current_player_index+1) % len(self._players)
+                self.current_player_index = i
+                if self.current_player:
+                    break
         townhall_count = self.mapper.get_townhalls_count(self.current_player)
         self.current_player.action_points = 10 + (townhall_count-1)*2
         for p in [p for p in self.players if p is not self.current_player]:

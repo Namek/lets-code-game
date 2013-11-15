@@ -1,5 +1,6 @@
 import random
 
+from base import GameError
 from models import Trujkont
 
 
@@ -55,7 +56,10 @@ class Mapper(object):
 
     def get_trujkont(self, row, col):
         row, col = int(row), int(col)
-        return self.map[row][col]
+        try:
+            return self.map[row][col]
+        except IndexError:
+            raise GameError('Why are you trying to get this trujkont?')
 
     def get_townhalls_count(self, player):
         # comprehensions, ho!
