@@ -8,6 +8,14 @@ public class Map {
 		return fields[rowIndex][colIndex];
 	}
 	
+	public int getWidth() {
+		return fields[0].length;
+	}
+	
+	public int getHeight() {
+		return fields.length;
+	}
+	
 	public static boolean isUpperTriangle(int rowIndex, int colIndex) {
 		return rowIndex % 2 != colIndex % 2;
 	}
