@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+
+import net.engio.mbassy.listener.Handler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net.Protocol;
@@ -14,6 +17,9 @@ import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 import com.letscode.lcg.network.messages.MessageEnvelope;
+import com.letscode.lcg.network.messages.PlayerJoinedMessage;
+import com.letscode.lcg.network.messages.PlayerLeftMessage;
+import com.letscode.lcg.network.messages.PlayerListMessage;
 
 public class NetworkComponent {
 	private static class MessageListener extends Thread {
@@ -95,6 +101,21 @@ public class NetworkComponent {
 		}
 	}
 	
+	@Handler
+	private void playerJoinedHandler(PlayerJoinedMessage message) {
+		players.add(message.nickname);
+	}
+	
+	@Handler
+	private void playerLeftHandler(PlayerLeftMessage message) {
+		players.remove(message.nickname);
+	}
+	
+	@Handler
+	private void playerListHandler(PlayerListMessage message) {
+		players = message.players;
+	}
+	
 	public void start(String host, int port) {
 		Socket socket = Gdx.net.newClientSocket(Protocol.TCP, host, port, null);
 		listener = new MessageListener(socket.getInputStream());
@@ -115,6 +136,11 @@ public class NetworkComponent {
 		sender.enqueueMessage(MessageFactory.createHandshakeMessage(nickname));
 	}
 	
+	public ArrayList<String> getPlayers() {
+		return players;
+	}
+	
+	private ArrayList<String> players;
 	private MessageListener listener;
 	private MessageSender sender;
 }
