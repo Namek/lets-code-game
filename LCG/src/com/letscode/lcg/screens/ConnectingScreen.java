@@ -3,47 +3,50 @@ package com.letscode.lcg.screens;
 import net.engio.mbassy.listener.Handler;
 
 import com.letscode.lcg.Context;
+import com.letscode.lcg.model.Map;
 import com.letscode.lcg.network.Events;
-import com.letscode.lcg.network.NetworkComponent;
-import com.letscode.lcg.network.messages.GameStartMessage;
 import com.letscode.lcg.network.messages.PlayerJoinedMessage;
 import com.letscode.lcg.network.messages.PlayerLeftMessage;
 import com.letscode.lcg.network.messages.PlayerListMessage;
+import com.letscode.lcg.network.messages.StateMessage;
 import com.letscode.ui.BaseScreen;
 
 public class ConnectingScreen extends BaseScreen {
 
-	private NetworkComponent network;
+	private Context context;
 	
 	public ConnectingScreen(Context context) {
 		super(context.app);
-		network = context.network;
+		this.context = context;
 		Events.subscribe(this);	
 	}
 
 	@Handler
 	public void playerJoinedHandler(PlayerJoinedMessage message) {
-		System.out.print(message);
+		// TODO
 	}
 	
 	@Handler
 	public void playerLeftHandler(PlayerLeftMessage message) {
-		System.out.print(message);
+		// TODO
 	}
 	
 	@Handler
 	public void playerListHandler(PlayerListMessage message) {
-		network.sendGameStartMessage();
+		context.network.sendGameStartMessage();
 	}
 	
 	@Handler
-	public void gameStartedHandler(GameStartMessage message) {
-		System.out.print(message);
+	public void stateHandler(StateMessage message) {
+		message.convertJsonToModel();
+		context.map = new Map(message.fields);
+		context.app.switchScreens(new PlayScreen(context));
+		Events.unsubscribe(this);
 	}
-
+	
 	@Override
 	public void act(float delta) {
-		network.update();
+		context.network.update();
 	}
 	
 	@Override
