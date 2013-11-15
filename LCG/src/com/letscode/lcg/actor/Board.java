@@ -75,15 +75,11 @@ public class Board extends Group {
 		}
 	}
 	
-	
-	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 		
 	}
-
-
 
 	private ClickListener boardClickListener = new ClickListener() {
 
@@ -100,8 +96,5 @@ public class Board extends Group {
 			}
 			return super.isOver(actor, x, y);
 		}
-		
-		
-		
 	};
 }

@@ -94,7 +94,6 @@ public class ConnectingScreen extends BaseScreen {
 		context.app.switchScreens(new PlayScreen(context));
 		
 		Events.unsubscribe(this);
-		clear();
 	}
 	
 	@Override

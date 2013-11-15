@@ -73,7 +73,6 @@ public class FieldActor extends Actor {
 		if (field == null)
 			return;
 		
-		
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(context.colorsForPlayers.get(field.owner));
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
@@ -82,9 +81,7 @@ public class FieldActor extends Actor {
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
-		localToStageCoordinates(tmpPos.set(x, y));
+		tmpPos.set(x, y);
 		return touchable && Intersector.isPointInTriangle(tmpPos, leftPoint, centerPoint, rightPoint) ? this : null;
 	}
-	
-	
 }
