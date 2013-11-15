@@ -33,7 +33,7 @@ class Player(object):
         self.fp.flush()
 
     def exception(self, e):
-        self.send('exception', str(e))
+        self.send('exception', {'message': str(e)})
 
 
 class Trujkont(object):
@@ -44,3 +44,11 @@ class Trujkont(object):
     def __init__(self, row, col):
         self.row = row
         self.col = col
+
+    def to_dict(self):
+        return {
+            'type': 'gold' if self.resources > 0 else 'normal',
+            'owner': self.owner.name if self.owner else None,
+            'building': self.building,
+            'resourceSize': self.resources,
+        }

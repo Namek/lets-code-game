@@ -1,15 +1,21 @@
 
+from models import Trujkont
 
 
 class Mapper(object):
     def __init__(self, ovrs, rows, cols):
         self.ovrs = ovrs
-        self.rows = rows
-        self.cols = cols
+        self.rows = int(rows)
+        self.cols = int(cols)
 
     def generate(self):
-        pass
+        arr = [
+            [Trujkont(row, col) for col in range(self.cols)]
+            for row in range(self.rows)
+        ]
+        self.map = arr
 
-    @property
-    def state(self):
-        return self.map
+    def to_dict(self):
+        return {
+            'state': [[t.to_dict() for t in r] for r in self.map]
+        }

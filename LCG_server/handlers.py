@@ -14,6 +14,8 @@ class Handlers(object):
         self.ovrs = ovrs  # ovrs as OVERSEEEEEARH
 
     def do(self, who, what, message):
+        if not who.name and what != 'handshake':
+            raise GameError('Handshake first')
         handler = self.EVENTS.get(what)
         if not handler:
             raise GameError('Invalid event type')
@@ -42,4 +44,4 @@ class Handlers(object):
         self.ovrs.mapper.generate()
         for p in self.ovrs.players:
             p.send('gameStarting', {'nickname': who.name})
-            p.send('state', self.ovrs.mapper.state)
+            p.send('state', self.ovrs.mapper.to_dict())
