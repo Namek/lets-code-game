@@ -43,9 +43,10 @@ class Trujkont(object):
     building = None
     resources = 0
 
-    def __init__(self, row, col):
+    def __init__(self, row, col, mapper):
         self.row = row
         self.col = col
+        self.mapper = mapper
 
     def to_dict(self):
         return {
@@ -54,3 +55,20 @@ class Trujkont(object):
             'building': self.building,
             'resourceSize': self.resources,
         }
+
+    @property
+    def is_upper(self):
+        return self.row % 2 != self.col % 2
+
+    @property
+    def neighbours(self):
+        neighbours = []
+        if self.col > 0:
+            neighbours.append(self.mapper.get_trujkont(self.row, self.col+1))
+        if self.col < self.mapper.rows-1:
+            neighbours.append(self.mapper.get_trujkont(self.row, self.col-1))
+        if self.row > 0 and not self.is_upper:
+            neighbours.append(self.mapper.get_trujkont(self.row-1, self.col))
+        elif self.row < self.mapper.rows-1 and self.is_upper:
+            neighbours.append(self.mapper.get_trujkont(self.row+1, self.col))
+        return [n for n in neighbours if n]
