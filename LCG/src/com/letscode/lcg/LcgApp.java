@@ -50,6 +50,8 @@ public class LcgApp extends UiApp {
 	@Override
 	protected BaseScreen getFirstScreen() {
 		Context context = new Context(this);
+		context.network.start("localhost", 80);
+		context.network.sendHandshakeMessage("test");
 		//context.map = ... TODO?
 		
 		return new ConnectingScreen(context);
