@@ -19,3 +19,7 @@ class Mapper(object):
         return {
             'map': [[t.to_dict() for t in r] for r in self.map]
         }
+
+    def get_trujkont(self, row, col):
+        row, col = int(row), int(col)
+        return self.map[row][col]
