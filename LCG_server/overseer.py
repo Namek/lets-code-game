@@ -10,6 +10,7 @@ from models import Player
 class Overseer(object):
     _players = []
     current_player_index = None
+    game_started = False
 
     def __init__(self, map_size):
         self.handlers = Handlers(self)
@@ -39,6 +40,7 @@ class Overseer(object):
                 player.exception(e)
                 logger.info('%s raised %s' % (player.id, e))
                 continue
+        self.remove_player(player)
         try:
             socket.shutdown(0)
             socket.close()
@@ -74,3 +76,13 @@ class Overseer(object):
             self.current_player_index = i
             if self.current_player:
                 break
+
+    def remove_player(self, player):
+        if not self.game_started:
+            self._players.remove(player)
+        else:
+            i = self._players.index(player)
+            self._players[i] = None
+        # Notify others
+        for p in self.players:
+            p.send('playerLeft', {'nickname': player.name})

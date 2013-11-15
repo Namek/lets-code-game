@@ -17,5 +17,5 @@ class Mapper(object):
 
     def to_dict(self):
         return {
-            'state': [[t.to_dict() for t in r] for r in self.map]
+            'map': [[t.to_dict() for t in r] for r in self.map]
         }
