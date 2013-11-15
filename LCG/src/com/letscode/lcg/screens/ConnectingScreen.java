@@ -9,14 +9,12 @@ import com.letscode.lcg.network.messages.PlayerJoinedMessage;
 import com.letscode.lcg.network.messages.PlayerLeftMessage;
 import com.letscode.lcg.network.messages.PlayerListMessage;
 import com.letscode.ui.BaseScreen;
-import com.letscode.ui.UiApp;
 
 public class ConnectingScreen extends BaseScreen {
 
 	public ConnectingScreen(Context context) {
 		super(context.app);
-		Events.subscribe(this);
-	}
+		Events.subscribe(this);	}
 
 	@Handler
 	public void playerJoinedHandler(PlayerJoinedMessage message) {

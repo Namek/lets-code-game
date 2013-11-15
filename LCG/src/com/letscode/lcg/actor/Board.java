@@ -1,16 +1,23 @@
 package com.letscode.lcg.actor;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.letscode.lcg.Context;
 import com.letscode.lcg.model.Field;
 import com.letscode.lcg.model.Map;
 
 public class Board extends Group {
+	Context context;
 	Map map;
 	FieldActor[][] fields;
 	
+	FieldActor hoveredFieldActor;//currently hovered. May be none (null)
 	
-	public Board(Map map) {
-		this.map = map;
+	
+	public Board(Context context) {
+		this.context = context;
+		this.map = context.map;
 		
 		int rowsCount = map.getHeight();
 		int colsCount = map.getWidth();
@@ -20,10 +27,14 @@ public class Board extends Group {
 		for (int row = rowsCount - 1; row >= 0; --row) {
 			for (int col = 0; col < colsCount; ++col) {
 				Field fieldInfo = map.getField(row, col);
-				fields[row][col] = new FieldActor(fieldInfo, row, col);
+				FieldActor fieldActor = fields[row][col] = new FieldActor(context, fieldInfo, row, col);
+				
+				this.addActor(fieldActor);
 			}
 		}
 		updateSizes();
+		
+		addListener(boardClickListener);
 	}
 	
 	
@@ -32,7 +43,7 @@ public class Board extends Group {
 		updateSizes();
 	}
 	
-	public void updateSizes() {
+	private void updateSizes() {
 		int rowsCount = map.getHeight();
 		int colsCount = map.getWidth();
 		
@@ -58,4 +69,24 @@ public class Board extends Group {
 			y += fieldHeight;
 		}
 	}
+	
+	private ClickListener boardClickListener = new ClickListener() {
+
+		@Override
+		public boolean isOver(Actor actor, float x, float y) {
+			if (actor instanceof FieldActor) {
+				FieldActor fieldActor = (FieldActor)actor; 
+				fieldActor.isHovered = true;
+				
+				if (hoveredFieldActor != null) {
+					fieldActor.isHovered = false;
+				}
+				hoveredFieldActor = fieldActor;
+			}
+			return super.isOver(actor, x, y);
+		}
+		
+		
+		
+	};
 }

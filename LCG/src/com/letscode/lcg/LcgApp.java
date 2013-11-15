@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.letscode.lcg.screens.ConnectingScreen;
+import com.letscode.lcg.screens.PlayScreen;
 import com.letscode.ui.BaseScreen;
 import com.letscode.ui.Styles;
 import com.letscode.ui.UiApp;
@@ -54,6 +55,7 @@ public class LcgApp extends UiApp {
 		context.network.sendHandshakeMessage("test");
 		//context.map = ... TODO?
 		
-		return new ConnectingScreen(context);
+		//return new ConnectingScreen(context);
+		return new PlayScreen(context);
 	}
 }
