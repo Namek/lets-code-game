@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net.Protocol;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.utils.Json;
-import com.letscode.lcg.network.messages.MessageBase;
 import com.letscode.lcg.network.messages.MessageEnvelope;
 
 public class NetworkComponent {
@@ -88,8 +87,8 @@ public class NetworkComponent {
 	
 	public void update() {
 		while (listener.hasMessages()) {
-			MessageBase message = listener.dequeueMessage().message;
-			// TODO: publish message through mbassador
+			MessageEnvelope envelope = listener.dequeueMessage();
+			Events.publishEvent(envelope.message);
 		}
 	}
 	

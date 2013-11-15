@@ -2,6 +2,7 @@ package com.letscode.lcg;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.letscode.lcg.enums.BuildMode;
+import com.letscode.lcg.model.Map;
 import com.letscode.ui.UiApp;
 
 public class Context {
