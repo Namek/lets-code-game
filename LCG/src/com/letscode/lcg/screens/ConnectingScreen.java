@@ -18,7 +18,8 @@ public class ConnectingScreen extends BaseScreen {
 	public ConnectingScreen(Context context) {
 		super(context.app);
 		network = context.network;
-		Events.subscribe(this);	}
+		Events.subscribe(this);	
+	}
 
 	@Handler
 	public void playerJoinedHandler(PlayerJoinedMessage message) {
@@ -38,6 +39,11 @@ public class ConnectingScreen extends BaseScreen {
 	@Handler
 	public void gameStartedHandler(GameStartMessage message) {
 		System.out.print(message);
+	}
+
+	@Override
+	public void act(float delta) {
+		network.update();
 	}
 	
 	@Override

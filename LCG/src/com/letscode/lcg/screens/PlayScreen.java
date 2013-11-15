@@ -13,7 +13,7 @@ import com.letscode.ui.BaseScreen;
 import com.letscode.ui.UiApp;
 
 public class PlayScreen extends BaseScreen {
-	Context context;
+	Context context;	
 	
 	TextButton endTurnButton;
 	TextButton buildTownhallButton, buildGoldmineButton, buildBarricadeButton;
@@ -103,6 +103,11 @@ public class PlayScreen extends BaseScreen {
 	///////////////////////////////////////////////
 	// Some other shitty events
 	//
+	
+	@Override
+	public void act(float delta) {
+		context.network.update();
+	}
 	
 	@Override
 	public void onBackPress() {}
