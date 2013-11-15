@@ -18,11 +18,12 @@ public class Board extends Group {
 	public Board(Context context) {
 		this.context = context;
 		this.map = context.map;
-		
+	}
+
+	public void init() {
 		int rowsCount = map.getHeight();
 		int colsCount = map.getWidth();
 		fields = new FieldActor[rowsCount][colsCount];
-		
 		
 		for (int row = rowsCount - 1; row >= 0; --row) {
 			for (int col = 0; col < colsCount; ++col) {
@@ -44,16 +45,19 @@ public class Board extends Group {
 	}
 	
 	private void updateSizes() {
+		if (fields == null)
+			return;
+		
 		int rowsCount = map.getHeight();
 		int colsCount = map.getWidth();
 		
 		float totalWidth = getWidth() * getScaleX();
 		float totalHeight = getHeight() * getScaleY();
 		float fieldWidth = totalWidth / (float)(colsCount%2 == 0 ? colsCount/2 : colsCount/2+1);
-		float fieldHeight = totalHeight / (float)(rowsCount%2 == 0 ? rowsCount/2 : rowsCount/2+1);
+		float fieldHeight = totalHeight / (float)rowsCount;
 		
 		float x;
-		float y = 0;
+		float y = getY();
 		
 		for (int row = rowsCount - 1; row >= 0; --row) {
 			x = 0;
@@ -61,15 +65,26 @@ public class Board extends Group {
 //				Field fieldInfo = map.getField(row, col);
 				FieldActor fieldActor = fields[row][col];
 				
-				fieldActor.setSize(fieldWidth, fieldHeight);
 				fieldActor.setPosition(x, y);
+				fieldActor.setSize(fieldWidth, fieldHeight);
+				fieldActor.sizeChanged();
 				
-				x += fieldWidth/2;
+				x += fieldWidth / 4f;
 			}
-			y += fieldHeight;
+			y += fieldHeight/2;
 		}
 	}
 	
+	
+	
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		
+	}
+
+
+
 	private ClickListener boardClickListener = new ClickListener() {
 
 		@Override

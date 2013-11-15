@@ -46,4 +46,14 @@ public class Map {
 	public static boolean isUpperTriangle(int rowIndex, int colIndex) {
 		return rowIndex % 2 != colIndex % 2;
 	}
+
+	public boolean isFieldOwnedBy(String thisPlayerName, int rowIndex, int colIndex) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean canPlayerAttackField(String thisPlayerName, int rowIndex, int colIndex) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

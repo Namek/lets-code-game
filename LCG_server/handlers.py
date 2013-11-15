@@ -115,3 +115,6 @@ class Handlers(object):
             raise GameError('No gold on this trujkont')
         trujkont.resources -= 1
         who.gold += 100
+
+    def conquer(self, who, trujkont):
+        pass
