@@ -16,6 +16,7 @@ import com.badlogic.gdx.Net.Protocol;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
+import com.letscode.lcg.enums.CommandType;
 import com.letscode.lcg.network.messages.MessageEnvelope;
 import com.letscode.lcg.network.messages.PlayerJoinedMessage;
 import com.letscode.lcg.network.messages.PlayerLeftMessage;
@@ -149,6 +150,14 @@ public class NetworkComponent {
 	
 	public void sendGameStartMessage() {
 		sender.enqueueMessage(MessageFactory.createGameStartMessage());
+	}
+	
+	public void sendNextTurnMessage() {
+		sender.enqueueMessage(MessageFactory.createNextTurnMessage());
+	}
+	
+	public void sendMakeMoveMessage(int col, int row, CommandType commandType) {
+		sender.enqueueMessage(MessageFactory.createMakeMoveMessage(col, row, commandType));
 	}
 	
 	private ArrayList<String> players;
