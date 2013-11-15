@@ -27,7 +27,8 @@ class Handlers(object):
             )
         who.name = message['nickname']
         self.ovrs._players.append(who)
-        players = [p.name for p in self.ovrs.players if p is not who]
-        who.send('playerList', [p.name for p in self.ovrs.players])
+        players = [p for p in self.ovrs.players if p is not who]
+        msg = {'players': [p.name for p in self.ovrs.players]}
+        who.send('playerList', msg)
         for p in players:
             p.send('playerJoined', {'nickname': who.name})

@@ -55,7 +55,6 @@ public class LcgApp extends UiApp {
 		context.network.sendHandshakeMessage("test");
 		//context.map = ... TODO?
 		
-		//return new ConnectingScreen(context);
-		return new PlayScreen(context);
+		return new ConnectingScreen(context);
 	}
 }
