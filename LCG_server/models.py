@@ -15,7 +15,15 @@ class Player(object):
     def id(self):
         return self.name or '%s:%s' % self.addr
 
+    def _event_name(self, what):
+        event = '%s%s' % (what[0].upper(), what[1:])
+        return 'com.letscode.lcg.network.messages.%sMessage' % event
+
     def send(self, what, message):
+        # lol java
+        message.update({
+            'class': self._event_name(what)
+        })
         to_send = json.dumps({
             'type': what,
             'message': message

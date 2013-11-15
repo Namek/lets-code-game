@@ -18,6 +18,10 @@ public class Field {
 	public Field() {
 	}
 	
+	public static Field createNormalField() {
+		return createNormalField(null);
+	}
+	
 	public static Field createNormalField(String owner) {
 		Field field = new Field();
 		field.owner = owner;

@@ -4,6 +4,10 @@ public class Map {
 	private Field[][] fields;
 	
 	
+	public Map(Field[][] fields) {
+		this.fields = fields;
+	}
+	
 	public Field getField(int rowIndex, int colIndex) {
 		return fields[rowIndex][colIndex];
 	}
