@@ -1,2 +1,6 @@
 .metadata
 bin
+Lib
+Scripts
+Include
+*.sublime-workspace

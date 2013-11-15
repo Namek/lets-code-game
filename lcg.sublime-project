@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "D:\\Programowanie\\Python\\lcg",
+            "folder_exclude_patterns": [
+                "Include",
+                "Lib",
+                "Scripts"
+            ],
+            "file_exclude_patterns": [
+                "*.sublime-project",
+                "*.sublime-workspace",
+            ]
+		}
+	],
+    "settings": {
+        "python_interpreter": "D:\\Programowanie\\Python\\lcg\\Scripts\\Python.exe"
+    }
+}
