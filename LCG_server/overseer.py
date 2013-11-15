@@ -91,3 +91,10 @@ class Overseer(object):
         # Notify others
         for p in self.players:
             p.send('playerLeft', {'nickname': player.name})
+
+    def end_game(self, winner):
+        for p in self.players:
+            p.send('gameEnd', {'winner': winner.name})
+        self._players = [p for p in self.players]
+        self.game_started = False
+        self.current_player_index = None

@@ -77,6 +77,7 @@ class Handlers(object):
         what = message['what']
         trujkont = self.ovrs.mapper.get_trujkont(row, col)
         fnc = self.MOVES.get(what)
+        # Validation
         if not fnc:
             raise GameError('Invalid move type')
         cost_ap, cost_gold = self.COST.get(what)
@@ -84,11 +85,19 @@ class Handlers(object):
             raise GameError('Not enough action points')
         if who.gold < cost_gold:
             raise GameError('Not enough gold moneyz')
+        # Execute
         fnc(who, trujkont)
+        # Substract things
         who.gold -= cost_gold
         who.action_points -= cost_ap
+        # Game ended?
+        remaining = self.ovrs.mapper.remaining
+        if len(remaining) == 1:
+            self.ovrs.end_game(remaining[0])
+        # Next player?
         if who.action_points <= 0:
             self.ovrs.next_player()
+        # Do not notify others?
         if what in self.DO_NOT_NOTIFY:
             return
         # Inform others
