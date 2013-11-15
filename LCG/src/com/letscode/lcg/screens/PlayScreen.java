@@ -206,7 +206,7 @@ public class PlayScreen extends BaseScreen {
 		if (shouldSendCommand) {
 			actionPointsValueLabel.setText(new Integer(currentActionPoints).toString());
 			goldValueLabel.setText(new Integer(currentGold).toString());
-			//context.network.sendCommand(commandType, rowIndex, colIndex);
+			context.network.sendMakeMoveMessage(rowIndex, colIndex, commandType);
 		}
 	}
 	
@@ -269,8 +269,10 @@ public class PlayScreen extends BaseScreen {
 	ClickListener boardListener = new ClickListener() {
 		@Override 
 		public void clicked(InputEvent event, float x, float y)  {
-			int a = 0;
-			++a;
+			FieldActor fld = (FieldActor) event.getTarget();
+			if (fld != null) {
+				tryToMakeMove(fld);
+			}
 		};
 		
 	};
@@ -278,11 +280,6 @@ public class PlayScreen extends BaseScreen {
 	ClickListener endTurnButtonListener = new ClickListener() {
 		
 	};
-	
-	
-	///////////////////////////////////////////////
-	// Some other shitty events
-	//
 	
 	@Override
 	public void act(float delta) {
