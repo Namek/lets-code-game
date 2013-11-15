@@ -3,14 +3,17 @@ import json
 
 from base import logger, GameError, ServerError
 from handlers import Handlers
+from mapper import Mapper
 from models import Player
 
 
 class Overseer(object):
     _players = []
+    current_player_index = None
 
-    def __init__(self):
+    def __init__(self, map_size):
         self.handlers = Handlers(self)
+        self.mapper = Mapper(self, *map_size)
 
     def handle(self, socket, addr):
         fp = socket.makefile()
@@ -53,3 +56,21 @@ class Overseer(object):
     @property
     def players(self):
         return [p for p in self._players if p]
+
+    @property
+    def current_player(self):
+        return self._players[self.current_player_index]
+
+    @current_player.setter
+    def current_player(self, player):
+        self.current_player_index = self._players.index(player)
+
+    def next_player(self):
+        if self.current_player_index is None:
+            self.current_player_index = 0
+            return
+        while self.current_player:
+            i = (self.current_player_index+1) % len(self._players)
+            self.current_player_index = i
+            if self.current_player:
+                break
