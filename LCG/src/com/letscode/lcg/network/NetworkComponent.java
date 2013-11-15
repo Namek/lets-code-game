@@ -127,6 +127,10 @@ public class NetworkComponent {
 		}
 	}
 	
+	public String getClientNickname() {
+		return clientNickname;
+	}
+	
 	public ArrayList<String> getPlayers() {
 		return players;
 	}
@@ -145,6 +149,7 @@ public class NetworkComponent {
 	// Message sending
 	///////////////////////////////////
 	public void sendHandshakeMessage(String nickname) {
+		clientNickname = nickname;
 		sender.enqueueMessage(MessageFactory.createHandshakeMessage(nickname));
 	}
 	
@@ -160,6 +165,7 @@ public class NetworkComponent {
 		sender.enqueueMessage(MessageFactory.createMakeMoveMessage(col, row, commandType));
 	}
 	
+	private String clientNickname;
 	private ArrayList<String> players;
 	private MessageListener listener;
 	private MessageSender sender;

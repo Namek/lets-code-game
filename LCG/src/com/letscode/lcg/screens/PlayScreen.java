@@ -1,5 +1,7 @@
 package com.letscode.lcg.screens;
 
+import net.engio.mbassy.listener.Handler;
+
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -9,6 +11,12 @@ import com.esotericsoftware.tablelayout.Cell;
 import com.letscode.lcg.Context;
 import com.letscode.lcg.actor.Board;
 import com.letscode.lcg.enums.BuildMode;
+import com.letscode.lcg.network.Events;
+import com.letscode.lcg.network.messages.EndGameMessage;
+import com.letscode.lcg.network.messages.MoveDoneMessage;
+import com.letscode.lcg.network.messages.MoveMessage;
+import com.letscode.lcg.network.messages.NextPlayerMessage;
+import com.letscode.lcg.network.messages.YourTurnMessage;
 import com.letscode.ui.BaseScreen;
 import com.letscode.ui.UiApp;
 
@@ -26,7 +34,7 @@ public class PlayScreen extends BaseScreen {
 		super(context.app);
 		this.context = context;
 		UiApp app = context.app;
-	
+		Events.subscribe(this);
 		
 		buildTownhallButton = new TextButton("Townhall", app.skin);
 		buildGoldmineButton = new TextButton("Goldmine", app.skin);
@@ -67,14 +75,34 @@ public class PlayScreen extends BaseScreen {
 	///////////////////////////////////////////////
 	// Network Events
 	//
+	@Handler
+	public void moveHandler(MoveMessage message) {
+		System.out.println(message);
+	}
 	
-	// TODO!!11111
+	@Handler
+	public void nextPlayerHandler(NextPlayerMessage message) {
+		System.out.println(message);
+	}
 	
+	@Handler
+	public void yourTurnHandler(YourTurnMessage message) {
+		System.out.println(message);
+	}
+	
+	@Handler
+	public void endGameMessage(EndGameMessage message) {
+		System.out.println(message);
+	}
+	
+	@Handler
+	public void moveDoneHandler(MoveDoneMessage message) {
+		System.out.println(message);
+	}
 	
 	///////////////////////////////////////////////
 	// GUI Events
 	//
-	
 	ClickListener buildTownhallButtonListener = new ClickListener() {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
