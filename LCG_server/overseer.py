@@ -76,7 +76,11 @@ class Overseer(object):
             self.current_player_index = i
             if self.current_player:
                 break
-        self.current_player.action_points = 10
+        townhall_count = self.mapper.get_townhalls_count(self.current_player)
+        self.current_player.action_points = 10 + (townhall_count-1)*2
+        for p in [p for p in self.players if p is not self.current_player]:
+            p.send('nextPlayer', {'nickname': self.current_player.name})
+        self.current_player.send('yourTurn', self.current_player.state)
 
     def remove_player(self, player):
         if not self.game_started:
@@ -87,3 +91,10 @@ class Overseer(object):
         # Notify others
         for p in self.players:
             p.send('playerLeft', {'nickname': player.name})
+
+    def end_game(self, winner):
+        for p in self.players:
+            p.send('gameEnd', {'winner': winner.name})
+        self._players = [p for p in self.players]
+        self.game_started = False
+        self.current_player_index = None

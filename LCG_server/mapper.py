@@ -56,3 +56,18 @@ class Mapper(object):
     def get_trujkont(self, row, col):
         row, col = int(row), int(col)
         return self.map[row][col]
+
+    def get_townhalls_count(self, player):
+        # comprehensions, ho!
+        return len([
+            t for r in self.map for t in r if
+            t and t.owner is player and t.building == 'townhall'
+        ])
+
+    @property
+    def remaining_players(self):
+        remaining = []
+        for t in [t for r in self.map for t in r if t and t.owner]:
+            if t.building == 'townhall' and t.owner not in remaining:
+                remaining.append(t.owner)
+        return remaining

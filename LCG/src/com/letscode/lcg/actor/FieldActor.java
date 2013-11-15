@@ -1,6 +1,8 @@
 package com.letscode.lcg.actor;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Intersector;
@@ -17,7 +19,7 @@ public class FieldActor extends Actor {
 	Field field;
 	int rowIndex;
 	int colIndex;
-	boolean isUpperTriangle;
+	boolean isTriangleUpper;
 	
 		
 	// render info
@@ -33,7 +35,7 @@ public class FieldActor extends Actor {
 		this.field = field;
 		this.rowIndex = rowIndex;
 		this.colIndex = colIndex;
-		this.isUpperTriangle = Map.isUpperTriangle(rowIndex, colIndex);
+		this.isTriangleUpper = Map.isUpperTriangle(rowIndex, colIndex);
 	}
 
 	public int getRowIndex() {
@@ -49,7 +51,7 @@ public class FieldActor extends Actor {
 		float w = getWidth() * getScaleX();
 		float h = getHeight() * getScaleY();
 		
-		if (isUpperTriangle) {
+		if (isTriangleUpper) {
 			leftPoint.set(0, 0);
 			centerPoint.set(w/2, h);
 			rightPoint.set(w, 0);
@@ -73,15 +75,49 @@ public class FieldActor extends Actor {
 		if (field == null)
 			return;
 		
-		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(context.colorsForPlayers.get(field.owner));
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
+		shapeRenderer.end();		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.setColor(Color.BLACK);
+		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
+	}
+	
+	private void drawTextureOnField(TextureRegion texture, SpriteBatch batch) {
+		float tw = texture.getRegionWidth();
+		float th = texture.getRegionHeight();
+		
+		float w = getWidth() * getScaleX();
+		float h = getHeight() * getScaleY();
+		
+		boolean isTextureBigger = tw*th > w*h;
+		
+		float scaleX = isTextureBigger ? w/tw : tw/w;
+		float scaleY = isTextureBigger ? h/th : th/h;
+		float scale = Math.min(scaleX, scaleY);
+		
+		if (isHovered) {
+			scale *= 1.4f;
+		}
+		
+		float centerX = (leftPoint.x + rightPoint.x)/2 - tw/2*scale;
+		float centerY = (leftPoint.y + centerPoint.y)/2 - (isTriangleUpper ? th/2 : th/3)*scale;
+		localToParentCoordinates(tmpPos.set(centerX, centerY));
+		
+		float x = tmpPos.x;
+		float y = tmpPos.y;
+		
+		batch.setColor(Color.WHITE);
+		batch.draw(texture, x, y, 0, 0, tw, th, scale, scale, getRotation());
 	}
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
-		tmpPos.set(x, y);
-		return touchable && Intersector.isPointInTriangle(tmpPos, leftPoint, centerPoint, rightPoint) ? this : null;
+		if (super.hit(x, y, touchable) == this) {
+			tmpPos.set(x, y);
+			return Intersector.isPointInTriangle(tmpPos, leftPoint, centerPoint, rightPoint) ? this : null;
+		}
+		return null;
 	}
 }
