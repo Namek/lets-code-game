@@ -6,6 +6,8 @@ from base import logger
 class Player(object):
     name = None
     addr = None
+    action_points = 0
+    gold = 500
 
     def __init__(self, fp, addr):
         self.fp = fp
