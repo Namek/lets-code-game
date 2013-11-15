@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.letscode.lcg.screens.ConnectingScreen;
 import com.letscode.ui.BaseScreen;
 import com.letscode.ui.Styles;
 import com.letscode.ui.UiApp;
@@ -48,13 +49,9 @@ public class LcgApp extends UiApp {
 
 	@Override
 	protected BaseScreen getFirstScreen() {
+		Context context = new Context(this);
+		//context.map = ... TODO?
 		
-		return new BaseScreen(this) {
-			@Override
-			public void onBackPress() {
-				// TODO Auto-generated method stub
-				
-			}
-		};
+		return new ConnectingScreen(context);
 	}
 }
