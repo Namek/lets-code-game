@@ -116,8 +116,11 @@ public class FieldActor extends Actor {
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
-		localToStageCoordinates(tmpPos.set(x, y));
-		return touchable && Intersector.isPointInTriangle(tmpPos, leftPoint, centerPoint, rightPoint) ? this : null;
+		if (super.hit(x, y, touchable) == this) {
+			tmpPos.set(x, y);
+			return Intersector.isPointInTriangle(tmpPos, leftPoint, centerPoint, rightPoint) ? this : null;
+		}
+		return null;
 	}
 	
 	
