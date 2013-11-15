@@ -53,6 +53,6 @@ public class LcgApp extends UiApp {
 		context.network.start("localhost", 80);
 		context.network.sendHandshakeMessage("test");
 		
-		return new PlayScreen(context);
+		return new ConnectingScreen(context);
 	}
 }

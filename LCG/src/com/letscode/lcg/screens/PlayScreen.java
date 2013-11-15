@@ -161,7 +161,7 @@ public class PlayScreen extends BaseScreen {
 			
 		}
 		else if (context.currentBuildMode == BuildMode.Townhall) {
-			commandType = CommandType.townhall;
+			commandType = CommandType.build_townhall;
 			shouldSendCommand = canPlayerBuildOnField
 					&& currentActionPoints >= ActionCost.BUILD_TOWNHALL
 					&& currentGold >= BuildingGoldCost.TOWNHALL;
@@ -174,7 +174,7 @@ public class PlayScreen extends BaseScreen {
 			}
 		}
 		else if (context.currentBuildMode == BuildMode.Goldmine) {
-			commandType = CommandType.mine;
+			commandType = CommandType.build_mine;
 			shouldSendCommand = canPlayerBuildOnField
 					&& currentActionPoints >= ActionCost.BUILD_MINE
 					&& currentGold >= BuildingGoldCost.GOLDMINE;
@@ -187,7 +187,7 @@ public class PlayScreen extends BaseScreen {
 			}
 		}
 		else if (context.currentBuildMode == BuildMode.Barricade) {
-			commandType = CommandType.barricade;
+			commandType = CommandType.build_barricade;
 			
 			shouldSendCommand = canPlayerBuildOnField
 					&& currentActionPoints >= ActionCost.BUILD_BARRICADE
