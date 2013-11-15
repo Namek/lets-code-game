@@ -33,6 +33,13 @@ class Handlers(object):
     def do(self, who, what, message):
         if not who.name and what != 'handshake':
             raise GameError('Handshake first')
+        not_your_turn = (
+            self.ovrs.game_started and
+            self.ovrs.current_player is not who and
+            what not in ['handshake, gameStart']
+        )
+        if not_your_turn:
+            raise GameError('playr what r u doing playr staph')
         handler = self.EVENTS.get(what)
         if not handler:
             raise GameError('Invalid event type')
@@ -78,6 +85,10 @@ class Handlers(object):
         if who.gold < cost_gold:
             raise GameError('Not enough gold moneyz')
         fnc(who, trujkont)
+        who.gold -= cost_gold
+        who.action_points -= cost_ap
+        if who.action_points <= 0:
+            self.ovrs.next_player()
         if what in self.DO_NOT_NOTIFY:
             return
         # Inform others
@@ -117,4 +128,11 @@ class Handlers(object):
         who.gold += 100
 
     def conquer(self, who, trujkont):
-        pass
+        if trujkont.owner is who:
+            raise GameError('Why would you conquer the same trujkont twice?')
+        if not [n for n in trujkont.neighbours if n.owner is who]:
+            raise GameError('You don\'t own any adjacent trujkonts')
+        if trujkont.building:
+            trujkont.building = None
+        else:
+            trujkont.owner = who
