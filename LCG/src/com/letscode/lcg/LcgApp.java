@@ -27,7 +27,7 @@ public class LcgApp extends UiApp {
 				return false;
 			}
 		});
-		
+				
 		setClearColor(Color.LIGHT_GRAY);
 	}
 
