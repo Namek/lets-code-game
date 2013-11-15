@@ -37,7 +37,11 @@ public class Field {
 		return field;
 	}
 	
-	public Field owns(String owner) {
+	public boolean isOwnedBy(String player) {
+		return this.owner.equals(player);
+	}
+	
+	public Field setOwner(String owner) {
 		this.owner = owner;
 		return this;
 	}
