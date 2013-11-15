@@ -4,3 +4,4 @@ Lib
 Scripts
 Include
 *.sublime-workspace
+*.pyc
