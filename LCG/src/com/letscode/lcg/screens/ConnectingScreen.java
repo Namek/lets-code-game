@@ -32,7 +32,6 @@ public class ConnectingScreen extends BaseScreen {
 	
 	@Handler
 	public void playerListHandler(PlayerListMessage message) {
-		System.out.print(message);
 		network.sendGameStartMessage();
 	}
 	
