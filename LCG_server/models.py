@@ -21,7 +21,7 @@ class Player(object):
         event = '%s%s' % (what[0].upper(), what[1:])
         return 'com.letscode.lcg.network.messages.%sMessage' % event
 
-    def send(self, what, message):
+    def send(self, what, message={}):
         # lol java
         message.update({
             'class': self._event_name(what)
@@ -37,6 +37,12 @@ class Player(object):
     def exception(self, e):
         self.send('exception', {'message': str(e)})
 
+    @property
+    def state(self):
+        return {
+            'actionPoints': self.action_points,
+            'gold': self.gold
+        }
 
 class Trujkont(object):
     owner = None
