@@ -53,7 +53,7 @@ public class Board extends Group {
 		
 		float totalWidth = getWidth() * getScaleX();
 		float totalHeight = getHeight() * getScaleY();
-		float fieldWidth = totalWidth / (float)(colsCount%2 == 0 ? colsCount/2 : colsCount/2+1);
+		float fieldWidth = totalWidth / (float)(colsCount%2 == 0 ? colsCount/2+0.5f : colsCount/2+1);
 		float fieldHeight = totalHeight / (float)rowsCount;
 		
 		float x;
