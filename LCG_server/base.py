@@ -17,11 +17,11 @@ def set_logger():
 logger = logging.getLogger('lcg')
 
 
-class GameError(object):
+class GameError(Exception):
     def __str__(self):
         return 'Game exception: %s' % self.message
 
 
-class ServerError(object):
+class ServerError(Exception):
     def __str__(self):
         return 'Server exception: %s' % self.message
