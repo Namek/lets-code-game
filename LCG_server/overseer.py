@@ -76,7 +76,8 @@ class Overseer(object):
             self.current_player_index = i
             if self.current_player:
                 break
-        self.current_player.action_points = 10
+        townhall_count = self.mapper.get_townhalls_count(self.current_player)
+        self.current_player.action_points = 10 + (townhall_count-1)*2
         for p in [p for p in self.players if p is not self.current_player]:
             p.send('nextPlayer', {'nickname': self.current_player.name})
         self.current_player.send('yourTurn', self.current_player.state)
