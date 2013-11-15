@@ -2,52 +2,115 @@ package com.letscode.lcg.screens;
 
 import net.engio.mbassy.listener.Handler;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.letscode.lcg.Context;
+import com.letscode.lcg.model.Map;
 import com.letscode.lcg.network.Events;
-import com.letscode.lcg.network.NetworkComponent;
-import com.letscode.lcg.network.messages.GameStartMessage;
 import com.letscode.lcg.network.messages.PlayerJoinedMessage;
 import com.letscode.lcg.network.messages.PlayerLeftMessage;
 import com.letscode.lcg.network.messages.PlayerListMessage;
+import com.letscode.lcg.network.messages.StateMessage;
 import com.letscode.ui.BaseScreen;
 
 public class ConnectingScreen extends BaseScreen {
-
-	private NetworkComponent network;
+	private Context context;
+	private Table playerList = new Table();
 	
 	public ConnectingScreen(Context context) {
 		super(context.app);
-		network = context.network;
-		Events.subscribe(this);	
+		this.context = context;
+		Events.subscribe(this);
+		
+		mainTable.setBackground(app.skin.getDrawable("window1"));
+		mainTable.setColor(Color.valueOf("C5D8C5"));
+		
+		Skin skin = context.app.skin;
+		mainTable.add(new Label("Lambda Cipher Genesis - connecting people...", skin))
+			.top()
+			.row();
+		
+		Table lobbyTable = new Table();
+		lobbyTable.setBackground(app.skin.getDrawable("window1"));
+		lobbyTable.setColor(Color.valueOf("C5D8C5"));
+		lobbyTable.add(new Label("===== Lobby =====", skin))
+			.top()
+			.row();
+		lobbyTable.add(playerList)
+			.expand()
+			.top()
+			.row();
+		
+		TextButton startButton = new TextButton("Start game", skin);
+		startButton.addCaptureListener(startGameListener);
+		lobbyTable.add(startButton)
+			.pad(10)
+			.right()
+			.bottom();
+		
+		mainTable.add(lobbyTable)
+			.expand()
+			.fill()
+			.top();
 	}
 
 	@Handler
 	public void playerJoinedHandler(PlayerJoinedMessage message) {
-		System.out.print(message);
+		playerList.add(new Label(message.nickname, context.app.skin))
+			.row();
 	}
 	
 	@Handler
 	public void playerLeftHandler(PlayerLeftMessage message) {
-		System.out.print(message);
+		SnapshotArray<Actor> playerLabels = playerList.getChildren();
+		for (int i = 0; i < playerLabels.size; ++i) {
+			Label lbl = (Label)playerLabels.get(i); 
+			if (lbl.getText().equals(message.nickname)) {
+				playerList.removeActor(lbl);
+				break;
+			}
+		}
 	}
 	
 	@Handler
 	public void playerListHandler(PlayerListMessage message) {
-		network.sendGameStartMessage();
+		for (String nickname : message.players) {
+			playerList.add(new Label(nickname, context.app.skin))
+				.row();	
+		}
 	}
 	
 	@Handler
-	public void gameStartedHandler(GameStartMessage message) {
-		System.out.print(message);
+	public void stateHandler(StateMessage message) {
+		message.convertJsonToModel();
+		context.map = new Map(message.fields);
+		context.app.switchScreens(new PlayScreen(context));
+		
+		Events.unsubscribe(this);
+		clear();
 	}
-
+	
 	@Override
 	public void act(float delta) {
-		network.update();
+		context.network.update();
 	}
 	
 	@Override
 	public void onBackPress() {	
 		
 	}
+	
+	private ClickListener startGameListener = new ClickListener() {
+		@Override
+		public void clicked(InputEvent event, float x, float y) {
+			context.network.sendGameStartMessage();
+		};
+	};
 }

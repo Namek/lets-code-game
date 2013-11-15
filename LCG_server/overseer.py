@@ -76,6 +76,7 @@ class Overseer(object):
             self.current_player_index = i
             if self.current_player:
                 break
+        self.current_player.action_points = 10
 
     def remove_player(self, player):
         if not self.game_started:
