@@ -65,7 +65,7 @@ public class FieldActor extends Actor {
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		ShapeRenderer shapeRenderer = context.shapeRenderer;
 		//sizeChanged();
-		localToStageCoordinates(tmpPos.set(getX(), getY()));
+		localToStageCoordinates(tmpPos.set(0, 0));
 		
 		float x = tmpPos.x;
 		float y = tmpPos.y;

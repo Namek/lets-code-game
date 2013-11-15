@@ -69,9 +69,9 @@ public class Board extends Group {
 				fieldActor.setSize(fieldWidth, fieldHeight);
 				fieldActor.sizeChanged();
 				
-				x += fieldWidth / 4f;
+				x += fieldWidth / 2f;
 			}
-			y += fieldHeight/2;
+			y += fieldHeight;
 		}
 	}
 	
