@@ -8,6 +8,8 @@ public class Context {
 	public UiApp app;
 	public ShapeRenderer shapeRenderer;
 	public BuildMode currentBuildMode = BuildMode.None;
+	public Map map;
+	
 	
 	public Context(UiApp app) {
 		this.app = app;
