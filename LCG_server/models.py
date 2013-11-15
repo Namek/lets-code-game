@@ -34,3 +34,13 @@ class Player(object):
 
     def exception(self, e):
         self.send('exception', str(e))
+
+
+class Trujkont(object):
+    owner = None
+    building = None
+    resources = 0
+
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col

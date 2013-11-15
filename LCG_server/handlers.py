@@ -7,7 +7,9 @@ class Handlers(object):
 
     def __init__(self, ovrs):
         self.EVENTS = {
-            'handshake': self.handshake
+            'handshake': self.handshake,
+            'gameStart': self.game_start,
+            'endTurn': self.end_turn
         }
         self.ovrs = ovrs  # ovrs as OVERSEEEEEARH
 
@@ -32,3 +34,12 @@ class Handlers(object):
         who.send('playerList', msg)
         for p in players:
             p.send('playerJoined', {'nickname': who.name})
+
+    def end_turn(self, who, message):
+        self.ovrs.next_player()
+
+    def game_start(self, who, message):
+        self.ovrs.mapper.generate()
+        for p in self.ovrs.players:
+            p.send('gameStarting', {'nickname': who.name})
+            p.send('state', self.ovrs.mapper.state)
