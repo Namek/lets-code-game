@@ -2,9 +2,8 @@ package com.letscode.lcg.enums;
 
 public enum CommandType {
 	conquer,
-	build,
-	mine,
-	townhall,
-	barricade,
+	mine,		//build
+	townhall,	//build
+	barricade,	//build
 	mine_gold
 }

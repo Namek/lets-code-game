@@ -25,11 +25,15 @@ public class Context {
 		
 		// TODO test map - remove it later
 		Field[][] fields = new Field[][] {
-			new Field[] { Field.createNormalField(), Field.createNormalField(), Field.createNormalField(), Field.createNormalField() },
-			new Field[] { Field.createNormalField(), Field.createNormalField(), Field.createNormalField(), Field.createNormalField() },
-			new Field[] { Field.createNormalField(), Field.createGoldField(5), Field.createNormalField(), Field.createNormalField() },
-			new Field[] { Field.createNormalField(), Field.createNormalField(), Field.createNormalField(), Field.createNormalField() }
+			new Field[] { Field.createNormalField(), Field.createNormalField(), Field.createNormalField(), Field.createNormalField(), Field.createNormalField() },
+			new Field[] { Field.createNormalField(),Field.createNormalField(), Field.createNormalField(), Field.createNormalField(), Field.createNormalField() },
+			new Field[] { Field.createNormalField(), Field.createNormalField(),Field.createGoldField(5), Field.createNormalField(), Field.createNormalField() },
+			new Field[] { Field.createNormalField(), Field.createNormalField(),Field.createNormalField(), Field.createNormalField(), Field.createNormalField() }
 		};
 		map = new Map(fields);
+	}
+
+	public String getPlayerNickname() {
+		return network.getClientNickname();
 	}
 }

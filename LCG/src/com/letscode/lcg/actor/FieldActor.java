@@ -35,7 +35,15 @@ public class FieldActor extends Actor {
 		this.colIndex = colIndex;
 		this.isUpperTriangle = Map.isUpperTriangle(rowIndex, colIndex);
 	}
-		
+
+	public int getRowIndex() {
+		return rowIndex;
+	}
+	
+	public int getColIndex() {
+		return colIndex;
+	}
+
 	@Override
 	public void sizeChanged() {
 		float w = getWidth() * getScaleX();
@@ -56,15 +64,17 @@ public class FieldActor extends Actor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		ShapeRenderer shapeRenderer = context.shapeRenderer;
+		//sizeChanged();
+		localToStageCoordinates(tmpPos.set(getX(), getY()));
 		
-		float x = getX();
-		float y = getY();
+		float x = tmpPos.x;
+		float y = tmpPos.y;
 		
 		if (field == null)
 			return;
 		
 		
-		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(context.colorsForPlayers.get(field.owner));
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
