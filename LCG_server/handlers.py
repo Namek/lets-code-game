@@ -10,6 +10,9 @@ class Handlers(object):
         'build_mine': (6, 400),
         'build_barricade': (4, 300),
     }
+    DO_NOT_NOTIFY = [
+        'mine_gold'
+    ]
 
     def __init__(self, ovrs):
         self.EVENTS = {
@@ -64,16 +67,28 @@ class Handlers(object):
         if not ('row' in message and 'col' in message and 'what' in message):
             raise GameError('Row, col or what not provided')
         row, col = message['row'], message['col']
+        what = message['what']
         trujkont = self.ovrs.mapper.get_trujkont(row, col)
-        fnc = self.MOVES.get(message['what'])
+        fnc = self.MOVES.get(what)
         if not fnc:
             raise GameError('Invalid move type')
-        cost_ap, cost_gold = self.COST.get(message['what'])
+        cost_ap, cost_gold = self.COST.get(what)
         if who.action_points < cost_ap:
             raise GameError('Not enough action points')
         if who.gold < cost_gold:
             raise GameError('Not enough gold moneyz')
         fnc(who, trujkont)
+        if what in self.DO_NOT_NOTIFY:
+            return
+        # Inform others
+        to_send = {
+            'who': who.name,
+            'row': row,
+            'col': col,
+            'what': what
+        }
+        for p in [p for p in self.ovrs.players if p is not who]:
+            p.send('move', to_send)
 
     def build_mine(self, who, trujkont):
         self._build(who, trujkont, 'mine')
@@ -90,3 +105,13 @@ class Handlers(object):
         if trujkont.building:
             raise GameError('One triangle = one building')
         trujkont.building = building
+
+    def mine_gold(self, who, trujkont):
+        if trujkont.owner is not who:
+            raise GameError('You do not own that trujkont')
+        if trujkont.building != 'mine':
+            raise GameError('How do you want to mine gold without a mine?')
+        if trujkont.resources <= 0:
+            raise GameError('No gold on this trujkont')
+        trujkont.resources -= 1
+        who.gold += 100
