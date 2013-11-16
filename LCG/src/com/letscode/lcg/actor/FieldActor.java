@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -100,8 +99,6 @@ public class FieldActor extends Actor {
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
 		
-
-
 		batch.begin();
 		
 		if (field.type.equals(Field.TYPE_NORMAL)) {
@@ -155,8 +152,6 @@ public class FieldActor extends Actor {
 		batch.setColor(Color.WHITE);
 		batch.draw(texture, x, y, 0, 0, tw, th, scale, scale, getRotation());
 	}
-	
-	
 
 	@Override
 	public void act(float delta) {
