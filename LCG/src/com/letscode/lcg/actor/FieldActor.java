@@ -5,12 +5,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
+import com.letscode.lcg.Assets;
 import com.letscode.lcg.Context;
 import com.letscode.lcg.model.Field;
 import com.letscode.lcg.model.Map;
+
+
 
 public class FieldActor extends Actor {
 	Context context;
@@ -36,6 +44,10 @@ public class FieldActor extends Actor {
 		this.rowIndex = rowIndex;
 		this.colIndex = colIndex;
 		this.isTriangleUpper = Map.isUpperTriangle(rowIndex, colIndex);
+	}
+	
+	public Field getField() {
+		return field;
 	}
 
 	public int getRowIndex() {
@@ -79,10 +91,35 @@ public class FieldActor extends Actor {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(fillColor);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
-		shapeRenderer.end();		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.end();
+		
+		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
+		
+		if (field.type.equals(Field.TYPE_NORMAL)) {
+			if (field.building == null) {
+				
+			}
+			else if (field.building.equals(Field.BUILDING_TOWNHALL)) {
+				drawTextureOnField(Assets.townhallTexture, batch);
+			}
+			else if (field.building.equals(Field.BUILDING_GOLDMINE)) {
+				drawTextureOnField(Assets.goldmineTexture, batch);
+			}
+			else if (field.building.equals(Field.BUILDING_BARRICADE)) {
+				drawTextureOnField(Assets.barricadeTexture, batch);
+			}
+		}
+		else if (field.type.equals(Field.TYPE_GOLD)) {
+			if (field.building.equals(Field.BUILDING_GOLDMINE)) {
+				drawTextureOnField(Assets.goldmineTexture, batch);
+			}
+			else if (field.building == null) {
+				drawTextureOnField(Assets.goldTexture, batch);
+			}
+		}
 	}
 	
 	private void drawTextureOnField(TextureRegion texture, SpriteBatch batch) {
@@ -121,5 +158,18 @@ public class FieldActor extends Actor {
 				return this;
 		}
 		return null;
+	}
+	
+	public void animateTouched() {
+		int baseDirection = isTriangleUpper ? 1 : -1;
+		float displacement = baseDirection * getHeight() * getScaleY() * 0.2f;
+		float time = 0.4f;
+		
+		addAction(
+			sequence(
+				moveBy(0, displacement, time/2, Interpolation.sineOut),
+				moveBy(0, -displacement, time/2, Interpolation.sineOut)
+			)
+		);
 	}
 }

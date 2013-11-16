@@ -94,7 +94,8 @@ public class ConnectingScreen extends BaseScreen {
 				.row();	
 		}
 		
-		if (message.players.size() != 1) startGameButton.setVisible(false);
+		if (message.players.size() != 1)
+			startGameButton.setVisible(false);
 		mapPlayerNamesToColors();
 	}
 	
@@ -131,6 +132,7 @@ public class ConnectingScreen extends BaseScreen {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			context.network.sendGameStartMessage();
+			startGameButton.setVisible(false);
 		};
 	};
 }
