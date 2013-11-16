@@ -23,6 +23,7 @@ public class Styles {
 		skin.add("lt-blue", new Color(.6f, .8f, 1f, 1f));
 		skin.add("lt-green", new Color(.6f, .9f, .6f, 1f));
 		skin.add("dark-blue", new Color(.1f, .3f, 1f, 1f));
+		skin.add("button-text", Color.valueOf("DDFF35FF"));
 
 		NinePatchDrawable btn1up = new NinePatchDrawable(atlas.createPatch("patchThick"));
 		NinePatchDrawable btn1down = new NinePatchDrawable(atlas.createPatch("patchThickDown"));
@@ -38,7 +39,7 @@ public class Styles {
 		skin.add("default", lbs);
 
 		TextButtonStyle tbs = new TextButtonStyle(btn1up, btn1down, btn1down, font);
-		tbs.fontColor = skin.getColor("dark-blue");
+		tbs.fontColor = skin.getColor("button-text");
 		tbs.pressedOffsetX = Math.round(1f * Gdx.graphics.getDensity());
 		tbs.pressedOffsetY = tbs.pressedOffsetX * -1f;
 		skin.add("default", tbs);

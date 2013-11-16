@@ -47,8 +47,6 @@ public class PlayScreen extends BaseScreen {
 		UiApp app = context.app;
 		Events.subscribe(this);
 		
-//		mainTable.setBackground(app.skin.getDrawable("window1"));
-//		mainTable.setColor(Color.valueOf("4792A5"));
 		mainTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
 		
 		buildTownhallButton = new TextButton("Townhall", app.skin);
@@ -76,6 +74,7 @@ public class PlayScreen extends BaseScreen {
         setTurnPlayerLabel(context.network.getClientNickname());
         endTurnButton = new TextButton("End turn", app.skin);
         endTurnButton.addListener(endTurnButtonListener);
+        endTurnButton.setColor(Color.valueOf("808080"));
         endTurnButton.setVisible(false);
         turnTable.add(turnPlayerLabel).expandX().fill();
         turnTable.row();
@@ -85,10 +84,13 @@ public class PlayScreen extends BaseScreen {
 		// Setup build buttons
         Table buttonsTable = new Table(app.skin);
         buildTownhallButton = new TextButton("Townhall", app.skin);
+        buildTownhallButton .setColor(Color.valueOf("808080"));
         buildTownhallButton.addListener(buildTownhallButtonListener);
         buildGoldmineButton = new TextButton("Goldmine", app.skin);
+        buildGoldmineButton.setColor(Color.valueOf("808080"));
         buildGoldmineButton.addListener(buildGoldmineButtonListener);
         buildBarricadeButton = new TextButton("Barricade", app.skin);
+        buildBarricadeButton.setColor(Color.valueOf("808080"));
         buildBarricadeButton.addListener(buildBarricadeButtonListener);
         buttonsTable.add(buildTownhallButton);
         buttonsTable.add(buildGoldmineButton);

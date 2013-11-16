@@ -20,13 +20,15 @@ public class GameResultScreen extends BaseScreen {
 	    label.setAlignment(Align.center); 
 	    mainTable.add(label).expand().fill(); 
 	    
-	    leftSystem = new ParticleSystem("winner.ps");
-	    rightSystem = new ParticleSystem("winner.ps");
-	    
-	    leftSystem.setPosition(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 2);
-	    rightSystem.setPosition(Gdx.graphics.getWidth() / 3 * 2, Gdx.graphics.getHeight() / 2);
-	    addActor(leftSystem);
-	    addActor(rightSystem);
+	    if (winner.equals(context.getPlayerNickname())) {
+		    leftSystem = new ParticleSystem("winner.ps");
+		    rightSystem = new ParticleSystem("winner.ps");
+		    
+		    leftSystem.setPosition(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2);
+		    rightSystem.setPosition(Gdx.graphics.getWidth() / 4 * 3, Gdx.graphics.getHeight() / 2);
+		    addActor(leftSystem);
+		    addActor(rightSystem);
+	    }
 	    
 	    mainTable.layout(); 
 	}
