@@ -105,6 +105,7 @@ class Handlers(object):
         # Next player?
         if who.action_points <= 0:
             self.ovrs.next_player()
+        who.send('moveDone', who.state)
         # Do not notify others?
         if what in self.DO_NOT_NOTIFY:
             return
@@ -117,7 +118,6 @@ class Handlers(object):
         }
         for p in [p for p in self.ovrs.players if p is not who]:
             p.send('move', to_send)
-        who.send('moveDone', who.state)
 
     def build_mine(self, who, trujkont):
         if not trujkont.resources:
