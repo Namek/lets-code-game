@@ -1,5 +1,7 @@
 package com.letscode.lcg;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -51,7 +53,11 @@ public class LcgApp extends UiApp {
 	protected BaseScreen getFirstScreen() {
 		Context context = new Context(this);
 		context.network.start("localhost", 80);
-		context.network.sendHandshakeMessage("test");
+		
+		String nickname = "test";
+		Random rand = new Random();
+		nickname += Integer.toString(rand.nextInt());
+		context.network.sendHandshakeMessage(nickname);
 		context.colorsForPlayers.put(context.network.getClientNickname(), Color.BLUE);
 		
 		return new ConnectingScreen(context);
