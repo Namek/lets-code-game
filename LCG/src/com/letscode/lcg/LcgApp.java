@@ -14,7 +14,14 @@ import com.letscode.ui.Styles;
 import com.letscode.ui.UiApp;
 
 public class LcgApp extends UiApp {
-
+	String hostname;
+	String nickname;
+	
+	public LcgApp(String hostname, String nickname) {
+		this.hostname = hostname;
+		this.nickname = nickname;
+	}
+	
 	@Override
 	public void create()
 	{
@@ -52,11 +59,7 @@ public class LcgApp extends UiApp {
 	@Override
 	protected BaseScreen getFirstScreen() {
 		Context context = new Context(this);
-		context.network.start("localhost", 80);
-		
-		String nickname = "test";
-		Random rand = new Random();
-		nickname += Integer.toString(rand.nextInt());
+		context.network.start(hostname, 80);
 		context.network.sendHandshakeMessage(nickname);
 		context.colorsForPlayers.put(context.network.getClientNickname(), Color.BLUE);
 		

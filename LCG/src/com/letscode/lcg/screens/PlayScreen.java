@@ -171,11 +171,10 @@ public class PlayScreen extends BaseScreen {
 					currentActionPoints -= ActionCost.CONQUER_EMPTY_FIELD;
 				}
 			}
-			else if (field.type == Field.TYPE_GOLD && currentActionPoints >= ActionCost.MINE_GOLD) {
+			else if (field.type.equals(Field.TYPE_GOLD) && currentActionPoints >= ActionCost.MINE_GOLD) {
 				commandType = CommandType.mine_gold;
 				shouldSendCommand = true;
-				field.building = Field.BUILDING_GOLDMINE;
-				currentActionPoints -= ActionCost.BUILD_MINE;
+				currentActionPoints -= ActionCost.MINE_GOLD;
 			}
 			
 		}
@@ -194,7 +193,9 @@ public class PlayScreen extends BaseScreen {
 		}
 		else if (context.currentBuildMode == BuildMode.Goldmine) {
 			commandType = CommandType.build_mine;
-			shouldSendCommand = canPlayerBuildOnField
+			shouldSendCommand =
+					field.type.equals(Field.TYPE_GOLD)
+					&& canPlayerBuildOnField
 					&& currentActionPoints >= ActionCost.BUILD_MINE
 					&& currentGold >= BuildingGoldCost.GOLDMINE;
 			
@@ -255,6 +256,7 @@ public class PlayScreen extends BaseScreen {
 	@Handler
 	public void nextPlayerHandler(NextPlayerMessage message) {
 		setTurnPlayerLabel(message.nickname);
+		endTurnButton.setVisible(false);
 	}
 	
 	@Handler
@@ -271,6 +273,9 @@ public class PlayScreen extends BaseScreen {
 	@Handler
 	public void moveDoneHandler(MoveDoneMessage message) {
 		updateGoldAndActionPoints(message.actionPoints, message.gold);
+		if (message.actionPoints == 0) {
+			endTurnButton.setVisible(false);
+		}
 	}
 	
 	///////////////////////////////////////////////

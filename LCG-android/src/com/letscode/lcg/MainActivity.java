@@ -1,5 +1,7 @@
 package com.letscode.lcg;
 
+import java.util.Random;
+
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -12,7 +14,8 @@ public class MainActivity extends AndroidApplication {
         
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
+        String nickname = "Player " + (new Random().nextInt(12415124));
         
-        initialize(new LcgApp(), cfg);
+        initialize(new LcgApp("localhost", nickname), cfg);
     }
 }
