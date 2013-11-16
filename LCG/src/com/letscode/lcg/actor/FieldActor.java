@@ -35,7 +35,7 @@ public class FieldActor extends Actor {
 	Vector2 leftPoint = new Vector2();
 	Vector2 rightPoint = new Vector2();
 	Vector2 centerPoint = new Vector2();
-	boolean isHovered;
+	boolean isHovered = false;
 
 		
 	public FieldActor(Context context, Field field, int rowIndex, int colIndex) {
@@ -78,7 +78,7 @@ public class FieldActor extends Actor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		ShapeRenderer shapeRenderer = context.shapeRenderer;
-		//sizeChanged();
+		sizeChanged();
 		localToStageCoordinates(tmpPos.set(0, 0));
 		
 		float x = tmpPos.x;
@@ -149,6 +149,13 @@ public class FieldActor extends Actor {
 		batch.setColor(Color.WHITE);
 		batch.draw(texture, x, y, 0, 0, tw, th, scale, scale, getRotation());
 	}
+	
+	
+
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+	}
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
@@ -161,14 +168,18 @@ public class FieldActor extends Actor {
 	}
 	
 	public void animateTouched() {
-		int baseDirection = isTriangleUpper ? 1 : -1;
-		float displacement = baseDirection * getHeight() * getScaleY() * 0.2f;
-		float time = 0.4f;
+		if (field == null)
+			return;
 		
+		int baseDirection = isTriangleUpper ? 1 : -1;
+		float displacement = baseDirection * getHeight() * getScaleY() * 0.3f;
+		float time = 0.2f;
+		
+		toFront();
 		addAction(
 			sequence(
 				moveBy(0, displacement, time/2, Interpolation.sineOut),
-				moveBy(0, -displacement, time/2, Interpolation.sineOut)
+				moveBy(0, -displacement, time/2, Interpolation.sineIn)
 			)
 		);
 	}
