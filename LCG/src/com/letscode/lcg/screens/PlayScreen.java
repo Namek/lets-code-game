@@ -159,15 +159,16 @@ public class PlayScreen extends BaseScreen {
 					&& currentActionPoints >= ActionCost.CONQUER_EMPTY_FIELD;
 				
 				if (shouldSendCommand) {
-					field.owner = thisPlayerName;
-					currentActionPoints -= ActionCost.CONQUER_EMPTY_FIELD;
-					
 					if (field.building != null) {
 						ParticleSystem explodeBuilding = new ParticleSystem("explode.ps");
 						explodeBuilding.setPosition(fieldActor.getX(), fieldActor.getY());
 						explodeBuilding.toFront();
 						board.addActor(explodeBuilding);
 					}
+
+					field.building = null;
+					field.owner = thisPlayerName;
+					currentActionPoints -= ActionCost.CONQUER_EMPTY_FIELD;
 				}
 			}
 			else if (field.type == Field.TYPE_GOLD && currentActionPoints >= ActionCost.BUILD_MINE) {
