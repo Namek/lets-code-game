@@ -70,9 +70,9 @@ class Trujkont(object):
     @property
     def neighbours(self):
         neighbours = []
-        if self.col > 0:
-            neighbours.append(self.mapper.get_trujkont(self.row, self.col+1))
         if self.col < self.mapper.cols-1:
+            neighbours.append(self.mapper.get_trujkont(self.row, self.col+1))
+        if self.col > 0:
             neighbours.append(self.mapper.get_trujkont(self.row, self.col-1))
         if self.row > 0 and not self.is_upper:
             neighbours.append(self.mapper.get_trujkont(self.row-1, self.col))
