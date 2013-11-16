@@ -24,7 +24,7 @@ import com.letscode.lcg.enums.BuildingGoldCost;
 import com.letscode.lcg.enums.CommandType;
 import com.letscode.lcg.model.Field;
 import com.letscode.lcg.network.Events;
-import com.letscode.lcg.network.messages.EndGameMessage;
+import com.letscode.lcg.network.messages.GameEndMessage;
 import com.letscode.lcg.network.messages.MoveDoneMessage;
 import com.letscode.lcg.network.messages.MoveMessage;
 import com.letscode.lcg.network.messages.NextPlayerMessage;
@@ -168,7 +168,9 @@ public class PlayScreen extends BaseScreen {
 				if (shouldSendCommand) {
 					if (field.building != null) {
 						ParticleSystem explodeBuilding = new ParticleSystem("explode.ps");
-						explodeBuilding.setPosition(fieldActor.getX(), fieldActor.getY());
+						explodeBuilding.setPosition(
+								fieldActor.getX() + fieldActor.getWidth() / 2,
+								fieldActor.getY() + fieldActor.getHeight() / 3);
 						explodeBuilding.toFront();
 						board.addActor(explodeBuilding);
 					}
@@ -246,7 +248,8 @@ public class PlayScreen extends BaseScreen {
 	@Handler
 	public void moveHandler(MoveMessage message) {
 		Field fld = context.map.getField(message.row, message.col);
-		if (message.what == CommandType.conquer) {			
+		if (message.what == CommandType.conquer) {	
+			if (fld.building != null) fld.building = null;
 			fld.owner = message.who;
 		}
 		else if (message.what == CommandType.build_mine) {
@@ -274,8 +277,8 @@ public class PlayScreen extends BaseScreen {
 	}
 	
 	@Handler
-	public void endGameMessage(EndGameMessage message) {
-		System.out.println(message);
+	public void endGameMessage(GameEndMessage message) {
+		app.switchScreens(new GameResultScreen(context, message.winner));
 	}
 	
 	@Handler

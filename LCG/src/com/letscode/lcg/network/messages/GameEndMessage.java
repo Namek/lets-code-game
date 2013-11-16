@@ -1,5 +1,5 @@
 package com.letscode.lcg.network.messages;
 
-public class EndGameMessage extends MessageBase {
+public class GameEndMessage extends MessageBase {
 	public String winner;
 }
