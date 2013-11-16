@@ -19,8 +19,14 @@ class Overseer(object):
     def handle(self, socket, addr):
         fp = socket.makefile()
         player = Player(fp, addr)
-        logger.info('%s:%s connected' % addr)
-        while True:
+        enter_teh_infiniteh_loopah = True
+        if self.game_started:
+            logger.info(
+                '%s tried to connect, but game already started' % player.id
+            )
+            enter_teh_infiniteh_loopah = False
+        logger.info('%s connected' % player.id)
+        while enter_teh_infiniteh_loopah:
             try:
                 line = fp.readline()
             except socketerror:
@@ -83,11 +89,14 @@ class Overseer(object):
         self.current_player.send('yourTurn', self.current_player.state)
 
     def remove_player(self, player):
-        if not self.game_started:
-            self._players.remove(player)
-        else:
-            i = self._players.index(player)
-            self._players[i] = None
+        try:
+            if not self.game_started:
+                self._players.remove(player)
+            else:
+                i = self._players.index(player)
+                self._players[i] = None
+        except ValueError:  # lol
+            pass
         # Notify others
         for p in self.players:
             p.send('playerLeft', {'nickname': player.name})
