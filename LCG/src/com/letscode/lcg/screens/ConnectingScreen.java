@@ -1,7 +1,6 @@
 package com.letscode.lcg.screens;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import net.engio.mbassy.listener.Handler;
