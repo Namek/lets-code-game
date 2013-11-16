@@ -24,7 +24,7 @@ public class Board extends Group {
 		int colsCount = map.getWidth();
 		fields = new FieldActor[rowsCount][colsCount];
 		
-		for (int row = rowsCount - 1; row >= 0; --row) {
+		for (int row = 0; row < rowsCount; ++row) {
 			for (int col = 0; col < colsCount; ++col) {
 				Field fieldInfo = map.getField(row, col);
 				FieldActor fieldActor = fields[row][col] = new FieldActor(context, fieldInfo, row, col);

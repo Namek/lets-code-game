@@ -125,6 +125,13 @@ public abstract class UiApp implements ApplicationListener {
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
 		stage.setViewport(w, h, false);
+		
+		if (currentScreen != null) {
+			currentScreen.resize(width, height);
+		}
+		if (nextScreen != null) {
+			currentScreen.resize(width, height);
+		}
 	}
 
 	@Override

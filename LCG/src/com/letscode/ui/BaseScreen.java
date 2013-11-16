@@ -61,4 +61,10 @@ public abstract class BaseScreen extends Group {
 
 	public void hide() {
 	}
+	
+	public void resize(int width, int height) {
+		mainTable.setSize(width, height);
+		mainTable.invalidateHierarchy();
+		mainTable.layout();
+	}
 }
