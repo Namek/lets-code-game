@@ -8,4 +8,5 @@ public abstract class Assets {
 	public static final TextureRegion goldmineTexture = new TextureRegion(new Texture("data/goldmine.png")); 
 	public static final TextureRegion barricadeTexture = new TextureRegion(new Texture("data/barricade.png")); 
 	public static final TextureRegion goldTexture = new TextureRegion(new Texture("data/gold.png")); 
+	public static final TextureRegion backgroundTexture = new TextureRegion(new Texture("data/background.png")); 
 }
