@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.letscode.lcg.Context;
 import com.letscode.lcg.actor.Board;
 import com.letscode.lcg.actor.FieldActor;
+import com.letscode.lcg.actor.ParticleSystem;
 import com.letscode.lcg.enums.ActionCost;
 import com.letscode.lcg.enums.BuildMode;
 import com.letscode.lcg.enums.BuildingGoldCost;
@@ -158,6 +159,14 @@ public class PlayScreen extends BaseScreen {
 					&& currentActionPoints >= ActionCost.CONQUER_EMPTY_FIELD;
 				
 				if (shouldSendCommand) {
+					if (field.building != null) {
+						ParticleSystem explodeBuilding = new ParticleSystem("explode.ps");
+						explodeBuilding.setPosition(fieldActor.getX(), fieldActor.getY());
+						explodeBuilding.toFront();
+						board.addActor(explodeBuilding);
+					}
+
+					field.building = null;
 					field.owner = thisPlayerName;
 					currentActionPoints -= ActionCost.CONQUER_EMPTY_FIELD;
 				}
@@ -229,10 +238,18 @@ public class PlayScreen extends BaseScreen {
 	//
 	@Handler
 	public void moveHandler(MoveMessage message) {
-		System.out.println(message);
-		if (message.what == CommandType.conquer) {
-			Field fld = context.map.getField(message.row, message.col);
+		Field fld = context.map.getField(message.row, message.col);
+		if (message.what == CommandType.conquer) {			
 			fld.owner = message.who;
+		}
+		else if (message.what == CommandType.build_mine) {
+			fld.building = Field.BUILDING_GOLDMINE; 
+		}
+		else if (message.what == CommandType.build_townhall) {
+			fld.building = Field.BUILDING_TOWNHALL;
+		}
+		else if (message.what == CommandType.build_barricade) {
+			fld.building = Field.BUILDING_BARRICADE;
 		}
 	}
 	

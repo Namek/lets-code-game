@@ -6,7 +6,7 @@ from models import Trujkont
 
 class Mapper(object):
     GOLD = 0.1  # how many % of trujkonts get gold
-    MISSING = 0.1  # how many % of trujkonts will be missing
+    MISSING = 0.05  # how many % of trujkonts will be missing
 
     def __init__(self, ovrs, rows, cols):
         self.ovrs = ovrs
