@@ -23,7 +23,7 @@ public class Context {
 	public Context(UiApp app) {
 		this.app = app;
 		shapeRenderer = new ShapeRenderer();
-		colorsForPlayers.put(null, Color.WHITE);		
+		colorsForPlayers.put(null, Color.WHITE);
 	}
 
 	public String getPlayerNickname() {

@@ -142,6 +142,8 @@ public class NetworkComponent {
 		
 		sender = new MessageSender(socket.getOutputStream());
 		sender.start();
+		
+		Events.subscribe(this);
 	}
 	
 	
