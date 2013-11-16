@@ -86,6 +86,8 @@ public class FieldActor extends Actor {
 		
 		if (field == null)
 			return;
+
+		batch.end();
 		
 		Color fillColor = isHovered ? Color.ORANGE : context.colorsForPlayers.get(field.owner);
 		shapeRenderer.begin(ShapeType.Filled);
@@ -97,6 +99,8 @@ public class FieldActor extends Actor {
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
+
+		batch.begin();
 		
 		if (field.type.equals(Field.TYPE_NORMAL)) {
 			if (field.building == null) {
