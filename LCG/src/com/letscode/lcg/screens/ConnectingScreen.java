@@ -35,7 +35,7 @@ public class ConnectingScreen extends BaseScreen {
 		Events.subscribe(this);
 		
 		mainTable.setBackground(app.skin.getDrawable("window1"));
-		mainTable.setColor(Color.valueOf("C5D8C5"));
+		mainTable.setColor(Color.valueOf("4792A5"));
 		
 		Skin skin = context.app.skin;
 		mainTable.add(new Label("Lambda Cipher Genesis - connecting people...", skin))
@@ -44,8 +44,8 @@ public class ConnectingScreen extends BaseScreen {
 		
 		Table lobbyTable = new Table();
 		lobbyTable.setBackground(app.skin.getDrawable("window1"));
-		lobbyTable.setColor(Color.valueOf("C5D8C5"));
-		lobbyTable.add(new Label("===== Lobby =====", skin))
+		lobbyTable.setColor(Color.valueOf("6DE1FF"));
+		mainTable.add(new Label("===== Lobby =====", skin))
 			.top()
 			.row();
 		lobbyTable.add(playerList)

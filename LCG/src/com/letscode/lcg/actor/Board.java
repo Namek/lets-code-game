@@ -54,7 +54,7 @@ public class Board extends Group {
 		float fieldHeight = totalHeight / (float)rowsCount;
 		
 		float x;
-		float y = getY();
+		float y = getY() - 5.5f;
 		
 		for (int row = rowsCount - 1; row >= 0; --row) {
 			x = 0;
