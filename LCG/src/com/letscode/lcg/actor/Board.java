@@ -1,5 +1,6 @@
 package com.letscode.lcg.actor;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.letscode.lcg.Context;
@@ -75,7 +76,7 @@ public class Board extends Group {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		
+
 	}
 
 	@Override
@@ -86,6 +87,10 @@ public class Board extends Group {
 			if (actor instanceof FieldActor) {
 				FieldActor fieldActor = (FieldActor)actor; 
 				fieldActor.isHovered = true;
+				
+				ParticleSystem sys = new ParticleSystem("explode.ps");
+				sys.setPosition(x, y);
+				this.addActor(sys);
 				
 				if (fieldActor != hoveredFieldActor) {
 					if (hoveredFieldActor != null) {
