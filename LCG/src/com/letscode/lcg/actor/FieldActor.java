@@ -113,10 +113,10 @@ public class FieldActor extends Actor {
 			}
 		}
 		else if (field.type.equals(Field.TYPE_GOLD)) {
-			if (field.building.equals(Field.BUILDING_GOLDMINE)) {
+			if (field.building == null) {
 				drawTextureOnField(Assets.goldmineTexture, batch);
 			}
-			else if (field.building == null) {
+			else if (field.building.equals(Field.BUILDING_GOLDMINE)) {
 				drawTextureOnField(Assets.goldTexture, batch);
 			}
 		}
