@@ -211,7 +211,7 @@ public class PlayScreen extends BaseScreen {
 		}
 	}
 	
-	private void updateGoldAndActionPoints(int gold, int actionPoints) {
+	private void updateGoldAndActionPoints(int actionPoints, int gold) {
 		actionPointsValueLabel.setText(Integer.toString(actionPoints));
 		goldValueLabel.setText(Integer.toString(gold));
 	}
@@ -300,6 +300,7 @@ public class PlayScreen extends BaseScreen {
 	
 	@Override
 	public void act(float delta) {
+		super.act(delta);
 		context.network.update();
 	}
 	

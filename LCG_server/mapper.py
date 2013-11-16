@@ -1,6 +1,6 @@
 import random
 
-from base import GameError, logger
+from base import ServerError, GameError, logger
 from models import Trujkont
 
 
@@ -12,6 +12,8 @@ class Mapper(object):
         self.ovrs = ovrs
         self.rows = int(rows)
         self.cols = int(cols)
+        if self.rows < 3 or self.cols < 3:
+            raise ServerError('Map must be at least 4x4')
 
     def generate(self):
         arr = [
@@ -48,8 +50,8 @@ class Mapper(object):
                 valid_triangle = (
                     not trujkont.resources and
                     not trujkont.owner and
-                    1 < trujkont.row < self.rows-2 and
-                    1 < trujkont.col < self.cols-2 and
+                    0 < trujkont.row < self.rows-1 and
+                    0 < trujkont.col < self.cols-1 and
                     len([t for t in trujkont.neighbours if not t.owner]) == 3
                 )
             trujkont.owner = p
