@@ -21,8 +21,14 @@ public class ParticleSystem extends Actor {
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
+		super.draw(batch, parentAlpha);		
 		emitter.draw(batch);
+	};
+	
+	@Override
+	public void setPosition(float x, float y) {
+		super.setPosition(x, y);
+		emitter.setPosition(x, y);
 	};
 	
 	private ParticleEffect emitter;
