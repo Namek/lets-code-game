@@ -38,7 +38,6 @@ public class PlayScreen extends BaseScreen {
 	
 	Board board;
 	
-
 	public PlayScreen(Context context) {
 		super(context.app);
 		this.context = context;
@@ -67,6 +66,7 @@ public class PlayScreen extends BaseScreen {
         Table turnTable = new Table(app.skin);
         turnPlayerLabel = new Label("hgw", app.skin);
         turnPlayerLabel.setAlignment(Align.center);
+        setTurnPlayerLabel(context.network.getClientNickname());
         endTurnButton = new TextButton("End turn", app.skin);
         endTurnButton.addListener(endTurnButtonListener);
         endTurnButton.setVisible(false);
