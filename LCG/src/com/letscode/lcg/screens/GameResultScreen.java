@@ -36,8 +36,11 @@ public class GameResultScreen extends BaseScreen {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		leftSystem.act(delta);
-		rightSystem.act(delta);
+		
+		if (leftSystem != null) {
+			leftSystem.act(delta);
+			rightSystem.act(delta);
+		}
 	};
 	
 	@Override
