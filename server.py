@@ -39,7 +39,7 @@ if __name__ == '__main__':
     lcg = LCG(HOST, PORT, (rows, cols))
     try:
         lcg.serve()
-    except KeyboardInterrupt: # expected
+    except KeyboardInterrupt:  # expected
         pass
     # bye bye!
     logger.info('Exiting.')
