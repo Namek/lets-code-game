@@ -277,12 +277,14 @@ public class PlayScreen extends BaseScreen {
 		public void clicked(InputEvent event, float x, float y)  {
 			Actor actor = event.getTarget() instanceof FieldActor ? (FieldActor) event.getTarget() : null;
 			
-			if (actor instanceof FieldActor) {
-				FieldActor fieldActor = (FieldActor)actor;
-				fieldActor.animateTouched();
-				
-				if (fieldActor.getField() != null) {
-					tryToMakeMove(fieldActor);
+			if (actor != null) {
+				if (actor instanceof FieldActor) {
+					FieldActor fieldActor = (FieldActor)actor;
+					fieldActor.animateTouched();
+					
+					if (fieldActor.getField() != null) {
+						tryToMakeMove(fieldActor);
+					}
 				}
 			}
 		};

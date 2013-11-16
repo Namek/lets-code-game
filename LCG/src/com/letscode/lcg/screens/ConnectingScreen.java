@@ -70,7 +70,6 @@ public class ConnectingScreen extends BaseScreen {
 	public void playerJoinedHandler(PlayerJoinedMessage message) {
 		playerList.add(new Label(message.nickname, context.app.skin))
 			.row();
-		mapPlayerNamesToColors();
 	}
 	
 	@Handler
@@ -83,7 +82,6 @@ public class ConnectingScreen extends BaseScreen {
 				break;
 			}
 		}
-		mapPlayerNamesToColors();
 	}
 	
 	@Handler
@@ -95,11 +93,11 @@ public class ConnectingScreen extends BaseScreen {
 		
 		if (message.players.size() != 1)
 			startGameButton.setVisible(false);
-		mapPlayerNamesToColors();
 	}
 	
 	@Handler
 	public void stateHandler(StateMessage message) {
+		mapPlayerNamesToColors();
 		message.convertJsonToModel();
 		context.map = new Map(message.fields);
 		context.app.switchScreens(new PlayScreen(context));
