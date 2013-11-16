@@ -157,8 +157,8 @@ public class NetworkComponent {
 		sender.enqueueMessage(MessageFactory.createGameStartMessage());
 	}
 	
-	public void sendNextTurnMessage() {
-		sender.enqueueMessage(MessageFactory.createNextTurnMessage());
+	public void sendEndTurnMessage() {
+		sender.enqueueMessage(MessageFactory.createEndTurnMessage());
 	}
 	
 	public void sendMakeMoveMessage(int col, int row, CommandType commandType) {

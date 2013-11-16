@@ -1,5 +1,5 @@
 # coding: utf-8
-from base import GameError
+from base import GameError, logger
 
 
 class Handlers(object):
@@ -43,6 +43,7 @@ class Handlers(object):
         handler = self.EVENTS.get(what)
         if not handler:
             raise GameError('Invalid event type')
+        logger.info('%s sent %s' % (who.id, what))
         handler(who, message)
 
     def handshake(self, who, message):

@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -208,10 +207,14 @@ public class PlayScreen extends BaseScreen {
 		if (shouldSendCommand) {
 			actionPointsValueLabel.setText(new Integer(currentActionPoints).toString());
 			goldValueLabel.setText(new Integer(currentGold).toString());
-			//context.network.sendCommand(commandType, rowIndex, colIndex);
+			context.network.sendMakeMoveMessage(rowIndex, colIndex, commandType);
 		}
 	}
 	
+	private void updateGoldAndActionPoints(int gold, int actionPoints) {
+		actionPointsValueLabel.setText(Integer.toString(actionPoints));
+		goldValueLabel.setText(Integer.toString(gold));
+	}
 	
 	///////////////////////////////////////////////
 	// Network Events
@@ -223,12 +226,13 @@ public class PlayScreen extends BaseScreen {
 	
 	@Handler
 	public void nextPlayerHandler(NextPlayerMessage message) {
-		System.out.println(message);
+		setTurnPlayerLabel(message.nickname);
 	}
 	
 	@Handler
 	public void yourTurnHandler(YourTurnMessage message) {
-		System.out.println(message);
+        endTurnButton.setVisible(true);
+        updateGoldAndActionPoints(message.actionPoints, message.gold);
 	}
 	
 	@Handler
@@ -238,7 +242,7 @@ public class PlayScreen extends BaseScreen {
 	
 	@Handler
 	public void moveDoneHandler(MoveDoneMessage message) {
-		System.out.println(message);
+		updateGoldAndActionPoints(message.actionPoints, message.gold);
 	}
 	
 	///////////////////////////////////////////////
@@ -271,7 +275,7 @@ public class PlayScreen extends BaseScreen {
 	EventListener boardListener = new ClickListener() {
 		@Override 
 		public void clicked(InputEvent event, float x, float y)  {
-			Actor actor = board.hit(x, y, true);
+			Actor actor = event.getTarget() instanceof FieldActor ? (FieldActor) event.getTarget() : null;
 			
 			if (actor instanceof FieldActor) {
 				FieldActor fieldActor = (FieldActor)actor;
@@ -282,17 +286,15 @@ public class PlayScreen extends BaseScreen {
 				}
 			}
 		};
-		
 	};
 	
 	ClickListener endTurnButtonListener = new ClickListener() {
-		
+		@Override 
+		public void clicked(InputEvent event, float x, float y)  {
+			context.network.sendEndTurnMessage();
+			endTurnButton.setVisible(false);
+		}
 	};
-	
-	
-	///////////////////////////////////////////////
-	// Some other shitty events
-	//
 	
 	@Override
 	public void act(float delta) {

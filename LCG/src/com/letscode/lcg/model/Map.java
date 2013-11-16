@@ -20,8 +20,17 @@ public class Map {
 		return fields.length;
 	}
 	
-	public boolean canAttackField(String attacker, int row, int col) {
+	public static boolean isUpperTriangle(int rowIndex, int colIndex) {
+		return rowIndex % 2 != colIndex % 2;
+	}
+
+	public boolean isFieldOwnedBy(String thisPlayerName, int rowIndex, int colIndex) {
+		return fields[rowIndex][colIndex].isOwnedBy(thisPlayerName);
+	}
+
+	public boolean canPlayerAttackField(String attacker, int row, int col) {
 		Field target = fields[row][col];
+		if (target == null) return false;
 		if (target.isOwnedBy(attacker)) return false;
 		
 		int rightAdj = col + 1;
@@ -41,19 +50,5 @@ public class Map {
 		}
 		
 		return canAttackAdjacentHorz || canAttackAdjacentVert;
-	}
-	
-	public static boolean isUpperTriangle(int rowIndex, int colIndex) {
-		return rowIndex % 2 != colIndex % 2;
-	}
-
-	public boolean isFieldOwnedBy(String thisPlayerName, int rowIndex, int colIndex) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean canPlayerAttackField(String thisPlayerName, int rowIndex, int colIndex) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

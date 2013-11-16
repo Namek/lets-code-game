@@ -5,6 +5,7 @@ import net.engio.mbassy.listener.Handler;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -23,7 +24,7 @@ import com.letscode.ui.BaseScreen;
 public class ConnectingScreen extends BaseScreen {
 	private Context context;
 	private Table playerList = new Table();
-	private TextButton startButton;
+	private Button startGameButton;
 	
 	public ConnectingScreen(Context context) {
 		super(context.app);
@@ -49,9 +50,9 @@ public class ConnectingScreen extends BaseScreen {
 			.top()
 			.row();
 		
-		startButton = new TextButton("Start game", skin);
-		startButton.addCaptureListener(startGameListener);
-		lobbyTable.add(startButton)
+		startGameButton = new TextButton("Start game", skin);
+		startGameButton.addCaptureListener(startGameListener);
+		lobbyTable.add(startGameButton)
 			.pad(10)
 			.right()
 			.bottom();
@@ -86,6 +87,9 @@ public class ConnectingScreen extends BaseScreen {
 			playerList.add(new Label(nickname, context.app.skin))
 				.row();	
 		}
+		
+		if (message.players.size() != 1)
+			startGameButton.setVisible(false);
 	}
 	
 	@Handler
@@ -111,7 +115,7 @@ public class ConnectingScreen extends BaseScreen {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			context.network.sendGameStartMessage();
-			startButton.setVisible(false);
+			startGameButton.setVisible(false);
 		};
 	};
 }
