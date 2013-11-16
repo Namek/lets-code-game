@@ -59,10 +59,7 @@ public class LcgApp extends UiApp {
 	@Override
 	protected BaseScreen getFirstScreen() {
 		Context context = new Context(this);
-		context.network.start(hostname, port);
-		context.network.sendHandshakeMessage(nickname);
-		context.colorsForPlayers.put(context.network.getClientNickname(), Color.BLUE);
 		
-		return new ConnectingScreen(context);
+		return new ConnectingScreen(context, nickname, hostname, port);
 	}
 }

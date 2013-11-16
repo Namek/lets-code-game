@@ -370,6 +370,7 @@ public class PlayScreen extends BaseScreen {
 		public void clicked(InputEvent event, float x, float y)  {
 			context.network.sendEndTurnMessage();
 			endTurnButton.setVisible(false);
+			endTurnButton.setChecked(false);
 		}
 	};
 	

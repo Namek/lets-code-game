@@ -58,7 +58,9 @@ public class GameResultScreen extends BaseScreen {
 	}
 	
 	@Override
-	public void onBackPress() {	}
+	public void onBackPress() {
+		Gdx.app.exit();
+	}
 
 }
 

@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import net.engio.mbassy.listener.Handler;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,7 +31,7 @@ public class ConnectingScreen extends BaseScreen {
 	private Table playerList = new Table();
 	private Button startGameButton;
 	
-	public ConnectingScreen(Context context) {
+	public ConnectingScreen(final Context context, final String defaultNickname, final String defaultHostname, final int defaultPort) {
 		super(context.app);
 		this.context = context;
 		Events.subscribe(this);
@@ -65,6 +67,53 @@ public class ConnectingScreen extends BaseScreen {
 			.expand()
 			.fill()
 			.top();
+		
+		if (defaultHostname != null && defaultPort > 0 && defaultNickname != null) {
+			connectToServer(defaultHostname, defaultPort, defaultNickname);
+		}
+		else {
+			// Ask for hostname
+			Gdx.input.getTextInput(new TextInputListener() {
+				@Override
+				public void input(final String hostname) {
+					// Ask for port
+					Gdx.input.getTextInput(new TextInputListener() {
+						@Override
+						public void input(final String port) {
+							// Ask for nickname
+							Gdx.input.getTextInput(new TextInputListener() {
+								@Override
+								public void input(String nickname) {
+									connectToServer(hostname, Integer.parseInt(port), nickname);
+								}
+	
+								@Override
+								public void canceled() {
+									Gdx.app.exit();
+								}
+							}, "Nickname:", defaultNickname);
+						}
+						
+						@Override
+						public void canceled() {
+							Gdx.app.exit();
+						}
+					}, "Port:", new Integer(defaultPort).toString());
+				}
+	
+				@Override
+				public void canceled() {
+					Gdx.app.exit();
+				}
+				
+			}, "Hostname:", defaultHostname);
+		}
+	}
+	
+	private void connectToServer(String hostname, int port, String nickname) {
+		context.network.start(hostname, port);
+		context.network.sendHandshakeMessage(nickname);
+		context.colorsForPlayers.put(context.network.getClientNickname(), Color.BLUE);
 	}
 
 	@Handler

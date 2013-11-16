@@ -14,8 +14,9 @@ public class MainActivity extends AndroidApplication {
         
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
-        String nickname = "Player " + (new Random().nextInt(12415124));
+        cfg.useWakelock = true;
+        String nickname = "Android Player " + (new Random().nextInt(12415124));
         
-        initialize(new LcgApp("localhost", 80, nickname), cfg);
+        initialize(new LcgApp(null, 0, nickname), cfg);
     }
 }

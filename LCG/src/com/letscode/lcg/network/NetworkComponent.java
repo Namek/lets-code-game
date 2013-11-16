@@ -121,7 +121,7 @@ public class NetworkComponent {
 	}
 	
 	public void update() {
-		while (listener.hasMessages()) {
+		while (listener != null && listener.hasMessages()) {
 			MessageEnvelope envelope = listener.dequeueMessage();
 			Events.publishEvent(envelope.message);
 		}
