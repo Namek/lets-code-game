@@ -77,7 +77,7 @@ public class ConnectingScreen extends BaseScreen {
 	public void playerLeftHandler(PlayerLeftMessage message) {
 		SnapshotArray<Actor> playerLabels = playerList.getChildren();
 		for (int i = 0; i < playerLabels.size; ++i) {
-			Label lbl = (Label)playerLabels.get(i); 
+			Label lbl = (Label)playerLabels.get(i);
 			if (lbl.getText().equals(message.nickname)) {
 				playerList.removeActor(lbl);
 				break;
