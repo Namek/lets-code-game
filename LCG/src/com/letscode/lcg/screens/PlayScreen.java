@@ -96,7 +96,6 @@ public class PlayScreen extends BaseScreen {
 		
         mainTable.row();
         Table boardTable = new Table(app.skin);
-//        boardTable.setBackground(app.skin.getDrawable("window1"));
         boardTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
         boardTable.setColor(Color.valueOf("C5D8C5"));
         boardTable.add(board).expand().fill();
@@ -163,6 +162,8 @@ public class PlayScreen extends BaseScreen {
 				
 				if (shouldSendCommand) {
 					if (field.building != null) {
+						field.building = null;
+						
 						ParticleSystem explodeBuilding = new ParticleSystem("explode.ps");
 						explodeBuilding.setPosition(
 								fieldActor.getX() + fieldActor.getWidth() / 2,
@@ -170,9 +171,10 @@ public class PlayScreen extends BaseScreen {
 						explodeBuilding.toFront();
 						board.addActor(explodeBuilding);
 					}
-
-					field.building = null;
-					field.owner = thisPlayerName;
+					else {
+						field.owner = thisPlayerName;	
+					}
+										
 					currentActionPoints -= ActionCost.CONQUER_EMPTY_FIELD;
 				}
 			}
@@ -245,8 +247,13 @@ public class PlayScreen extends BaseScreen {
 	public void moveHandler(MoveMessage message) {
 		Field fld = context.map.getField(message.row, message.col);
 		if (message.what == CommandType.conquer) {	
-			if (fld.building != null) fld.building = null;
-			fld.owner = message.who;
+			// TODO: enable particle effect
+			if (fld.building != null) {
+				fld.building = null;
+			}
+			else {
+				fld.owner = message.who;
+			}
 		}
 		else if (message.what == CommandType.build_mine) {
 			fld.building = Field.BUILDING_GOLDMINE; 
