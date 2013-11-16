@@ -10,15 +10,15 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		String hostname = args.length > 0 ? args[0] : "localhost";
 		int port = args.length > 1 ? Integer.parseInt(args[1]) : 80;
-		String nickname = args.length > 2 ? args[2] : "Player " + (new Random().nextInt(12415124));
+		String nickname = args.length > 2 ? args[2] : null;//"Player " + (new Random().nextInt(12415124));
 		
-		cfg.title = "Lambda Cipher Genesis - " + nickname;
+		final String gameTitle = "Lambda Cipher Genesis";
+		
+		cfg.title = nickname != null ? gameTitle + " - " + nickname : gameTitle;
 		cfg.useGL20 = false;
-		
-		{
-			cfg.width = 1024;
-			cfg.height = 600;
-		}
+		cfg.width = 1024;
+		cfg.height = 600;
+
 		new LwjglApplication(new LcgApp(hostname, port, nickname), cfg);
 	}
 }
