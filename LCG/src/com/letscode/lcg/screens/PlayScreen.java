@@ -5,7 +5,6 @@ import net.engio.mbassy.listener.Handler;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -226,7 +225,8 @@ public class PlayScreen extends BaseScreen {
 	
 	@Handler
 	public void yourTurnHandler(YourTurnMessage message) {
-		System.out.println(message);
+		actionPointsValueLabel.setText(message.actionPoints.toString());
+		goldValueLabel.setText(message.gold.toString());
 	}
 	
 	@Handler
@@ -274,7 +274,6 @@ public class PlayScreen extends BaseScreen {
 				tryToMakeMove(fld);
 			}
 		};
-		
 	};
 	
 	ClickListener endTurnButtonListener = new ClickListener() {

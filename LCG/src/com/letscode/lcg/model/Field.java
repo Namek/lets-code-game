@@ -38,7 +38,7 @@ public class Field {
 	}
 	
 	public boolean isOwnedBy(String player) {
-		return this.owner.equals(player);
+		return owner == null ? owner == player : this.owner.equals(player);
 	}
 	
 	public Field setOwner(String owner) {
