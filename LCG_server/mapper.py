@@ -17,7 +17,7 @@ class Mapper(object):
 
     def generate(self):
         arr = [
-            [Trujkont(row-1, col-1, self) for col in range(self.cols)]
+            [Trujkont(row, col, self) for col in range(self.cols)]
             for row in range(self.rows)
         ]
         self.map = arr

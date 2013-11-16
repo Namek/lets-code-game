@@ -88,9 +88,14 @@ public class Board extends Group {
 				FieldActor fieldActor = (FieldActor)actor; 
 				fieldActor.isHovered = true;
 				
+<<<<<<< HEAD
 				ParticleSystem sys = new ParticleSystem("explode.ps");
 				sys.setPosition(x, y);
 				this.addActor(sys);
+=======
+				if (fieldActor.hasGraphics())
+					fieldActor.toFront();
+>>>>>>> 410d15787f848ecc347b4d843848b4505848ba60
 				
 				if (fieldActor != hoveredFieldActor) {
 					if (hoveredFieldActor != null) {

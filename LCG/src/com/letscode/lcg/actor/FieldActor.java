@@ -35,6 +35,7 @@ public class FieldActor extends Actor {
 	Vector2 rightPoint = new Vector2();
 	Vector2 centerPoint = new Vector2();
 	boolean isHovered = false;
+	public static final Color hoverColor = Color.valueOf("333333");
 
 		
 	public FieldActor(Context context, Field field, int rowIndex, int colIndex) {
@@ -88,7 +89,20 @@ public class FieldActor extends Actor {
 
 		batch.end();
 		
-		Color fillColor = isHovered ? Color.ORANGE : context.colorsForPlayers.get(field.owner);
+		Color fillColor;
+		
+		if (isHovered) {
+			String thisPlayerName = context.getPlayerNickname();
+			
+			fillColor = FieldActor.hoverColor;
+			if ((field.owner != null && field.owner.equals(thisPlayerName)) || context.map.canPlayerAttackField(thisPlayerName, rowIndex, colIndex)) {
+				fillColor = context.colorsForPlayers.get(thisPlayerName);
+			}
+		}
+		else {
+			fillColor = context.colorsForPlayers.get(field.owner);
+		}
+		
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(fillColor);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
@@ -166,6 +180,10 @@ public class FieldActor extends Actor {
 				return this;
 		}
 		return null;
+	}
+	
+	public boolean hasGraphics() {
+		return field != null && (field.building != null || field.type.equals(Field.TYPE_GOLD));
 	}
 	
 	public void animateTouched() {
