@@ -120,6 +120,8 @@ class Handlers(object):
         who.send('moveDone', who.state)
 
     def build_mine(self, who, trujkont):
+        if not trujkont.resources:
+            raise GameError('Mine can\'t run without gold')
         self._build(who, trujkont, 'mine')
 
     def build_townhall(self, who, trujkont):
@@ -152,5 +154,7 @@ class Handlers(object):
             raise GameError('You don\'t own any adjacent trujkonts')
         if trujkont.building:
             trujkont.building = None
+            if trujkont.owner not in self.ovrs.mapper.remaining_players:
+                trujkont.owner = who
         else:
             trujkont.owner = who

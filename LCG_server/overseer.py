@@ -80,7 +80,11 @@ class Overseer(object):
             while self.current_player:
                 i = (self.current_player_index+1) % len(self._players)
                 self.current_player_index = i
-                if self.current_player:
+                valid = (
+                    self.current_player and
+                    self.current_player in self.mapper.remaining_players
+                )
+                if valid:
                     break
         townhall_count = self.mapper.get_townhalls_count(self.current_player)
         self.current_player.action_points = 10 + (townhall_count-1)*2
