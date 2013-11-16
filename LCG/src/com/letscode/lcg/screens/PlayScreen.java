@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.letscode.lcg.Assets;
 import com.letscode.lcg.Context;
 import com.letscode.lcg.actor.Board;
 import com.letscode.lcg.actor.FieldActor;
@@ -94,7 +96,8 @@ public class PlayScreen extends BaseScreen {
 		
         mainTable.row();
         Table boardTable = new Table(app.skin);
-        boardTable.setBackground(app.skin.getDrawable("window1"));
+//        boardTable.setBackground(app.skin.getDrawable("window1"));
+        boardTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
         boardTable.setColor(Color.valueOf("C5D8C5"));
         boardTable.add(board).expand().fill();
         mainTable.add(boardTable).expand().fill().colspan(3);
