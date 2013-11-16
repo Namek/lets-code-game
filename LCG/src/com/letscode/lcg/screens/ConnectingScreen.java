@@ -1,5 +1,8 @@
 package com.letscode.lcg.screens;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import net.engio.mbassy.listener.Handler;
 
 import com.badlogic.gdx.graphics.Color;
@@ -67,6 +70,7 @@ public class ConnectingScreen extends BaseScreen {
 	public void playerJoinedHandler(PlayerJoinedMessage message) {
 		playerList.add(new Label(message.nickname, context.app.skin))
 			.row();
+		mapPlayerNamesToColors();
 	}
 	
 	@Handler
@@ -79,6 +83,7 @@ public class ConnectingScreen extends BaseScreen {
 				break;
 			}
 		}
+		mapPlayerNamesToColors();
 	}
 	
 	@Handler
@@ -90,6 +95,7 @@ public class ConnectingScreen extends BaseScreen {
 		
 		if (message.players.size() != 1)
 			startGameButton.setVisible(false);
+		mapPlayerNamesToColors();
 	}
 	
 	@Handler
@@ -109,6 +115,16 @@ public class ConnectingScreen extends BaseScreen {
 	@Override
 	public void onBackPress() {	
 		
+	}
+	
+	private void mapPlayerNamesToColors() {
+		context.colorsForPlayers.clear();
+		context.colorsForPlayers.put(null, Color.WHITE);
+		ArrayList<String> players = context.network.getPlayers();
+		Collections.sort(players);
+		for (int i = 0; i < players.size(); ++i) {
+			context.colorsForPlayers.put(players.get(i), context.colors[i + 1]);
+		}
 	}
 	
 	private ClickListener startGameListener = new ClickListener() {

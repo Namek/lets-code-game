@@ -15,12 +15,14 @@ public class StateMessage extends MessageBase {
 		for (int row = 0; row < numRows; ++row) {
 			final int numCols = map.get(0).size();
 			for (int col = 0; col < numCols; ++col) {
-				Field fld = new Field();
-				fld.building = map.get(row).get(col).getString("building");
-				fld.owner = map.get(row).get(col).getString("owner");
-				fld.resourceSize = Integer.parseInt(map.get(row).get(col).getString("resourceSize"));
-				fld.type = map.get(row).get(col).getString("type");
-				fields[row][col] = fld;
+				if (map.get(row).get(col) != null) {
+					Field fld = new Field();
+					fld.building = map.get(row).get(col).getString("building");
+					fld.owner = map.get(row).get(col).getString("owner");
+					fld.resourceSize = Integer.parseInt(map.get(row).get(col).getString("resourceSize"));
+					fld.type = map.get(row).get(col).getString("type");
+					fields[row][col] = fld;
+				}
 			}
 		}
 	}
