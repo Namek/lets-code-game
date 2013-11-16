@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -59,16 +58,18 @@ public class PlayScreen extends BaseScreen {
 		
 		Table statsTable = new Table(app.skin);
 		statsTable.setBackground(app.skin.getDrawable("window1"));
+		statsTable.setColor(Color.valueOf("A0A0A0"));
 		statsTable.add(actionPointsLabel);
 		statsTable.add(actionPointsValueLabel);
 		statsTable.row();
 		statsTable.add(goldLabel);
-		statsTable.add(goldValueLabel);
+		statsTable.add(goldValueLabel);		
 		mainTable.add(statsTable);
 		
 		// Setup things about player's turn
         Table turnTable = new Table(app.skin);
         turnTable.setBackground(app.skin.getDrawable("window1"));
+        turnTable.setColor(Color.valueOf("A0A0A0"));
         turnPlayerLabel = new Label("hgw", app.skin);
         turnPlayerLabel.setAlignment(Align.center);
         setTurnPlayerLabel(context.network.getClientNickname());
@@ -112,6 +113,7 @@ public class PlayScreen extends BaseScreen {
         buttonsTable.add(buildTownhallTable);
         buttonsTable.add(buildGoldmineTable);
         buttonsTable.add(buildBarricadeTable);
+        buttonsTable.setColor(Color.valueOf("A0A0A0"));
         mainTable.add(buttonsTable);
         
         // Setup game board
