@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -50,11 +52,7 @@ public class PlayScreen extends BaseScreen {
 //		mainTable.setBackground(app.skin.getDrawable("window1"));
 //		mainTable.setColor(Color.valueOf("4792A5"));
 		mainTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
-		
-		buildTownhallButton = new TextButton("Townhall", app.skin);
-		buildGoldmineButton = new TextButton("Goldmine", app.skin);
-		buildBarricadeButton = new TextButton("Barricade", app.skin);
-		
+
 		Label actionPointsLabel = new Label("Action Points:", app.skin);
 		actionPointsValueLabel = new Label("0", app.skin);
 		
@@ -62,6 +60,7 @@ public class PlayScreen extends BaseScreen {
 		goldValueLabel = new Label("0", app.skin);
 		
 		Table statsTable = new Table(app.skin);
+		statsTable.setBackground(app.skin.getDrawable("window1"));
 		statsTable.add(actionPointsLabel);
 		statsTable.add(actionPointsValueLabel);
 		statsTable.row();
@@ -71,6 +70,7 @@ public class PlayScreen extends BaseScreen {
 		
 		// Setup things about player's turn
         Table turnTable = new Table(app.skin);
+        turnTable.setBackground(app.skin.getDrawable("window1"));
         turnPlayerLabel = new Label("hgw", app.skin);
         turnPlayerLabel.setAlignment(Align.center);
         setTurnPlayerLabel(context.network.getClientNickname());
@@ -84,15 +84,32 @@ public class PlayScreen extends BaseScreen {
 		
 		// Setup build buttons
         Table buttonsTable = new Table(app.skin);
+        buttonsTable.setBackground(app.skin.getDrawable("window1"));
+        
         buildTownhallButton = new TextButton("Townhall", app.skin);
         buildTownhallButton.addListener(buildTownhallButtonListener);
+        Table buildTownhallTable = new Table(app.skin);
+        Image buildTownhallImage = new Image(new TextureRegionDrawable(Assets.townhallTexture));
+        buildTownhallTable.add(buildTownhallImage).maxWidth(64).maxHeight(64).center();
+        buildTownhallTable.row();
+        buildTownhallTable.add(buildTownhallButton);
         buildGoldmineButton = new TextButton("Goldmine", app.skin);
         buildGoldmineButton.addListener(buildGoldmineButtonListener);
+        Table buildGoldmineTable = new Table(app.skin);
+        Image buildGoldmineImage = new Image(new TextureRegionDrawable(Assets.goldmineTexture));
+        buildGoldmineTable.add(buildGoldmineImage).maxWidth(64).maxHeight(64).center();
+        buildGoldmineTable.row();
+        buildGoldmineTable.add(buildGoldmineButton);
         buildBarricadeButton = new TextButton("Barricade", app.skin);
         buildBarricadeButton.addListener(buildBarricadeButtonListener);
-        buttonsTable.add(buildTownhallButton);
-        buttonsTable.add(buildGoldmineButton);
-        buttonsTable.add(buildBarricadeButton);
+        Table buildBarricadeTable = new Table(app.skin);
+        Image buildBarricadeImage = new Image(new TextureRegionDrawable(Assets.barricadeTexture));
+        buildBarricadeTable.add(buildBarricadeImage).maxWidth(64).maxHeight(64).center();
+        buildBarricadeTable.row();
+        buildBarricadeTable.add(buildBarricadeButton);
+        buttonsTable.add(buildTownhallTable);
+        buttonsTable.add(buildGoldmineTable);
+        buttonsTable.add(buildBarricadeTable);
         mainTable.add(buttonsTable);
         
         // Setup game board
