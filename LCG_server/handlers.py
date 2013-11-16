@@ -98,10 +98,10 @@ class Handlers(object):
         who.gold -= cost_gold
         who.action_points -= cost_ap
         # Game ended?
-        # remaining = self.ovrs.mapper.remaining_players
-        # if len(remaining) == 1:
-        #     self.ovrs.end_game(remaining[0])
-        #     return
+        remaining = self.ovrs.mapper.remaining_players
+        if len(remaining) == 1:
+            self.ovrs.end_game(remaining[0])
+            return
         # Next player?
         if who.action_points <= 0:
             self.ovrs.next_player()
