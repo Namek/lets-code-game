@@ -178,7 +178,10 @@ public class PlayScreen extends BaseScreen {
 					currentActionPoints -= ActionCost.CONQUER_EMPTY_FIELD;
 				}
 			}
-			else if (field.type.equals(Field.TYPE_GOLD) && currentActionPoints >= ActionCost.MINE_GOLD) {
+			else if (field.type.equals(Field.TYPE_GOLD) 
+					&& currentActionPoints >= ActionCost.MINE_GOLD
+					&& field.building != null
+					&& field.building.equals(Field.BUILDING_GOLDMINE)) {
 				commandType = CommandType.mine_gold;
 				shouldSendCommand = true;
 				currentActionPoints -= ActionCost.MINE_GOLD;
