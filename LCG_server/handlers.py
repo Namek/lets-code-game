@@ -8,7 +8,7 @@ class Handlers(object):
         'mine_gold': (3, 0),
         'build_townhall': (7, 600),
         'build_mine': (6, 400),
-        'build_barricade': (4, 300),
+        'build_barricade': (4, 150),
     }
     DO_NOT_NOTIFY = [
         'mine_gold'
