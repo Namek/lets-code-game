@@ -155,7 +155,7 @@ public class PlayScreen extends BaseScreen {
 	
 	private void setTurnPlayerLabel(String playerName) {
 		boolean thisPlayerMoves = playerName.equals(context.getPlayerNickname());
-		String labelText = thisPlayerMoves ? "Now you move!" : (playerName != null ? playerName : "");
+		String labelText = thisPlayerMoves ? "Now you move!" : (playerName != null ? "Now: " + playerName : "");
 		turnPlayerLabel.setText(labelText);
 		turnPlayerLabel.setColor(context.colorsForPlayers.get(playerName));
 	}
