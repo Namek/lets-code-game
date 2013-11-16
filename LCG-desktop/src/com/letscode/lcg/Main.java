@@ -9,8 +9,8 @@ public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		String hostname = args.length > 0 ? args[0] : "localhost";
-		int port = args.length > 1 ? Integer.parseInt(args[1]) : 80;
-		String nickname = args.length > 1 ? args[1] : "Player " + (new Random().nextInt(12415124));
+		int port = args.length > 1 ? Integer.parseInt(args[1]) : g;
+		String nickname = args.length > 2 ? args[2] : "Player " + (new Random().nextInt(12415124));
 		
 		cfg.title = "Lambda Cipher Genesis - " + nickname;
 		cfg.useGL20 = false;
