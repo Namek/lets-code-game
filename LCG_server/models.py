@@ -35,7 +35,7 @@ class Player(object):
         self.fp.flush()
 
     def exception(self, e):
-        self.send('exception', {'message': str(e)})
+        self.send('exception', {'reason': str(e)})
 
     @property
     def state(self):
