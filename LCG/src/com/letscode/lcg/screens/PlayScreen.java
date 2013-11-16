@@ -105,6 +105,13 @@ public class PlayScreen extends BaseScreen {
         
         context.app.setClearColor(Color.valueOf("9EAE9E"));
 	}
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		getStage().getCamera().update();
+		context.shapeRenderer.setProjectionMatrix(getStage().getCamera().combined);
+	}
 	
 	private void setBuildMode(BuildMode buildMode) {
 		context.currentBuildMode = buildMode;

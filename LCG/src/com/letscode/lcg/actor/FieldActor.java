@@ -99,6 +99,8 @@ public class FieldActor extends Actor {
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
+		
+
 
 		batch.begin();
 		
@@ -182,8 +184,12 @@ public class FieldActor extends Actor {
 		toFront();
 		addAction(
 			sequence(
-				moveBy(0, displacement, time/2, Interpolation.sineOut),
-				moveBy(0, -displacement, time/2, Interpolation.sineIn)
+				parallel(
+					moveBy(0, displacement, time/2, Interpolation.sineOut)
+				),
+				parallel(
+					moveBy(0, -displacement, time/2, Interpolation.sineIn)
+				)
 			)
 		);
 	}
