@@ -75,8 +75,9 @@ public class FieldActor extends Actor {
 		if (field == null)
 			return;
 		
+		Color fillColor = isHovered ? Color.ORANGE : context.colorsForPlayers.get(field.owner);
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(context.colorsForPlayers.get(field.owner));
+		shapeRenderer.setColor(fillColor);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
 		
@@ -116,9 +117,10 @@ public class FieldActor extends Actor {
 
 	@Override
 	public Actor hit(float x, float y, boolean touchable) {
-		if (super.hit(x, y, touchable) == this) {
+		if (super.hit(x, y, touchable) != null) {
 			tmpPos.set(x, y);
-			return Intersector.isPointInTriangle(tmpPos, leftPoint, centerPoint, rightPoint) ? this : null;
+			if (Intersector.isPointInTriangle(tmpPos, leftPoint, centerPoint, rightPoint)) 
+				return this;
 		}
 		return null;
 	}
