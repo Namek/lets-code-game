@@ -222,6 +222,10 @@ public class PlayScreen extends BaseScreen {
 	@Handler
 	public void moveHandler(MoveMessage message) {
 		System.out.println(message);
+		if (message.what == CommandType.conquer) {
+			Field fld = context.map.getField(message.row, message.col);
+			fld.owner = message.who;
+		}
 	}
 	
 	@Handler

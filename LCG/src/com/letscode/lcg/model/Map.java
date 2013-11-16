@@ -47,9 +47,9 @@ public class Map {
 		}
 		
 		boolean canAttackAdjacentVert = false;
-		int vertAdj = (isUpperTriangle(row, col) ? row - 1 : row + 1);
+		int vertAdj = (isUpperTriangle(row, col) ? row + 1 : row - 1);
 		if (vertAdj < getWidth() && vertAdj >= 0) {
-			canAttackAdjacentVert = fields[vertAdj][col] != null && fields[vertAdj][col].isOwnedBy(attacker);
+			canAttackAdjacentVert |= fields[vertAdj][col] != null && fields[vertAdj][col].isOwnedBy(attacker);
 		}
 		
 		return canAttackAdjacentHorz || canAttackAdjacentVert;

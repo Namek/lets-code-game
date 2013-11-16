@@ -163,7 +163,7 @@ public class NetworkComponent {
 		sender.enqueueMessage(MessageFactory.createEndTurnMessage());
 	}
 	
-	public void sendMakeMoveMessage(int col, int row, CommandType commandType) {
+	public void sendMakeMoveMessage(int row, int col, CommandType commandType) {
 		sender.enqueueMessage(MessageFactory.createMakeMoveMessage(col, row, commandType));
 	}
 	
