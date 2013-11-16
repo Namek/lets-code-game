@@ -52,6 +52,7 @@ public class LcgApp extends UiApp {
 		Context context = new Context(this);
 		context.network.start("localhost", 80);
 		context.network.sendHandshakeMessage("test");
+		context.colorsForPlayers.put(context.network.getClientNickname(), Color.BLUE);
 		
 		return new ConnectingScreen(context);
 	}

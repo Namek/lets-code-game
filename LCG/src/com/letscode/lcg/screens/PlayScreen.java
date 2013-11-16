@@ -4,6 +4,8 @@ import net.engio.mbassy.listener.Handler;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -29,8 +31,8 @@ import com.letscode.ui.UiApp;
 public class PlayScreen extends BaseScreen {
 	Context context;	
 	
-	TextButton endTurnButton;
-	TextButton buildTownhallButton, buildGoldmineButton, buildBarricadeButton;
+	Button endTurnButton;
+	Button buildTownhallButton, buildGoldmineButton, buildBarricadeButton;
 	Label actionPointsValueLabel, goldValueLabel, turnPlayerLabel;
 	
 	Board board;
@@ -44,7 +46,7 @@ public class PlayScreen extends BaseScreen {
 		
 		buildTownhallButton = new TextButton("Townhall", app.skin);
 		buildGoldmineButton = new TextButton("Goldmine", app.skin);
-		buildBarricadeButton = new TextButton("Barricade", app.skin);
+		buildBarricadeButton = new TextButton("Barricade", app.skin);		
 		
 		Label actionPointsLabel = new Label("Action Points:", app.skin);
 		actionPointsValueLabel = new Label("0", app.skin);
@@ -265,7 +267,11 @@ public class PlayScreen extends BaseScreen {
 	};
 	
 	ClickListener boardListener = new ClickListener() {
-		
+		@Override 
+		public void clicked(InputEvent event, float x, float y)  {
+			int a = 0;
+			++a;
+		};
 		
 	};
 	

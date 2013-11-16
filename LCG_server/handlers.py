@@ -53,6 +53,8 @@ class Handlers(object):
                 'Nickname must be provided, or else I will call you a '
                 'perkeleen vittupää'
             )
+        if [p for p in self.ovrs.players if p.name == message['nickname']]:
+            raise GameError('Nickname already taken')
         who.name = message['nickname']
         self.ovrs._players.append(who)
         players = [p for p in self.ovrs.players if p is not who]
@@ -69,6 +71,7 @@ class Handlers(object):
         for p in self.ovrs.players:
             p.send('gameStarting', {'nickname': who.name})
             p.send('state', self.ovrs.mapper.to_dict())
+        self.ovrs.next_player()
 
     def move(self, who, message):
         if not ('row' in message and 'col' in message and 'what' in message):
@@ -76,13 +79,15 @@ class Handlers(object):
         row, col = message['row'], message['col']
         what = message['what']
         trujkont = self.ovrs.mapper.get_trujkont(row, col)
+        if not trujkont:
+            raise GameError('This trujkont does not exist')
         fnc = self.MOVES.get(what)
         # Validation
         if not fnc:
             raise GameError('Invalid move type')
         cost_ap, cost_gold = self.COST.get(what)
         if who.action_points < cost_ap:
-            raise GameError('Not enough action points')
+            raise GameError('Not enough action pointz')
         if who.gold < cost_gold:
             raise GameError('Not enough gold moneyz')
         # Execute
@@ -91,9 +96,10 @@ class Handlers(object):
         who.gold -= cost_gold
         who.action_points -= cost_ap
         # Game ended?
-        remaining = self.ovrs.mapper.remaining
-        if len(remaining) == 1:
-            self.ovrs.end_game(remaining[0])
+        # remaining = self.ovrs.mapper.remaining_players
+        # if len(remaining) == 1:
+        #     self.ovrs.end_game(remaining[0])
+        #     return
         # Next player?
         if who.action_points <= 0:
             self.ovrs.next_player()

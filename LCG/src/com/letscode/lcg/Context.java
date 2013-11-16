@@ -21,7 +21,7 @@ public class Context {
 	public Context(UiApp app) {
 		this.app = app;
 		shapeRenderer = new ShapeRenderer();
-		colorsForPlayers.put(null, Color.WHITE);
+		colorsForPlayers.put(null, Color.WHITE);		
 		
 		// TODO test map - remove it later
 		Field[][] fields = new Field[][] {

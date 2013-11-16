@@ -73,8 +73,6 @@ public class Board extends Group {
 		}
 	}
 	
-	
-	
 	@Override
 	public void act(float delta) {
 		super.act(delta);

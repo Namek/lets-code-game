@@ -79,9 +79,7 @@ public class FieldActor extends Actor {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(fillColor);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
-		shapeRenderer.end();
-		
-		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.end();		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(Color.BLACK);
 		shapeRenderer.triangle(x + leftPoint.x, y + leftPoint.y, x + centerPoint.x, y + centerPoint.y, x + rightPoint.x, y + rightPoint.y);
 		shapeRenderer.end();
@@ -124,6 +122,4 @@ public class FieldActor extends Actor {
 		}
 		return null;
 	}
-	
-	
 }
