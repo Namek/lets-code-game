@@ -87,6 +87,9 @@ public class Board extends Group {
 				FieldActor fieldActor = (FieldActor)actor; 
 				fieldActor.isHovered = true;
 				
+				if (fieldActor.hasGraphics())
+					fieldActor.toFront();
+				
 				if (fieldActor != hoveredFieldActor) {
 					if (hoveredFieldActor != null) {
 						hoveredFieldActor.isHovered = false;

@@ -34,6 +34,9 @@ public class Map {
 		if (!areThoseIndicesProper(rowIndex, colIndex))
 			return false;
 		
+		if (isFieldOwnedBy(player, rowIndex, colIndex))
+			return false;
+		
 		// check upper and lower neighbour
 		if (isUpperTriangle(rowIndex, colIndex)) {
 			if (rowIndex < getHeight() && isFieldOwnedBy(player, rowIndex+1, colIndex))
