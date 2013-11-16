@@ -15,7 +15,7 @@ public class Context {
 	public BuildMode currentBuildMode = BuildMode.None;
 	public Map map;
 	public NetworkComponent network = new NetworkComponent();
-	public Color[] colors = new Color[] {Color.WHITE, Color.BLUE, Color.RED,
+	public Color[] colors = new Color[] {Color.WHITE, Color.ORANGE, Color.BLUE, Color.RED,
 									   Color.GREEN, Color.CYAN, Color.MAGENTA,
 									   Color.YELLOW};
 	public HashMap<String, Color> colorsForPlayers = new HashMap<String, Color>();

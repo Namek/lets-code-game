@@ -107,6 +107,7 @@ public class ConnectingScreen extends BaseScreen {
 	
 	@Override
 	public void act(float delta) {
+		super.act(delta);
 		context.network.update();
 	}
 	

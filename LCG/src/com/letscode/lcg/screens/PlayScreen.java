@@ -263,6 +263,7 @@ public class PlayScreen extends BaseScreen {
 	public void yourTurnHandler(YourTurnMessage message) {
         endTurnButton.setVisible(true);
         updateGoldAndActionPoints(message.actionPoints, message.gold);
+        setTurnPlayerLabel(context.getPlayerNickname());
 	}
 	
 	@Handler
