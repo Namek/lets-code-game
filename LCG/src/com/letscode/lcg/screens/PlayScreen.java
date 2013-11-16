@@ -3,6 +3,8 @@ package com.letscode.lcg.screens;
 import net.engio.mbassy.listener.Handler;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -266,11 +268,19 @@ public class PlayScreen extends BaseScreen {
 		}
 	};
 	
-	ClickListener boardListener = new ClickListener() {
+	EventListener boardListener = new ClickListener() {
 		@Override 
 		public void clicked(InputEvent event, float x, float y)  {
-			int a = 0;
-			++a;
+			Actor actor = board.hit(x, y, true);
+			
+			if (actor instanceof FieldActor) {
+				FieldActor fieldActor = (FieldActor)actor;
+				fieldActor.animateTouched();
+				
+				if (fieldActor.getField() != null) {
+					tryToMakeMove(fieldActor);
+				}
+			}
 		};
 		
 	};

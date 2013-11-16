@@ -23,6 +23,7 @@ import com.letscode.ui.BaseScreen;
 public class ConnectingScreen extends BaseScreen {
 	private Context context;
 	private Table playerList = new Table();
+	private TextButton startButton;
 	
 	public ConnectingScreen(Context context) {
 		super(context.app);
@@ -48,7 +49,7 @@ public class ConnectingScreen extends BaseScreen {
 			.top()
 			.row();
 		
-		TextButton startButton = new TextButton("Start game", skin);
+		startButton = new TextButton("Start game", skin);
 		startButton.addCaptureListener(startGameListener);
 		lobbyTable.add(startButton)
 			.pad(10)
@@ -110,6 +111,7 @@ public class ConnectingScreen extends BaseScreen {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			context.network.sendGameStartMessage();
+			startButton.setVisible(false);
 		};
 	};
 }
