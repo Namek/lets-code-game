@@ -55,6 +55,7 @@ public class ConnectingScreen extends BaseScreen {
 		
 		startGameButton = new TextButton("Start game", skin);
 		startGameButton.addCaptureListener(startGameListener);
+		startGameButton.setColor(Color.valueOf("808080"));
 		lobbyTable.add(startGameButton)
 			.pad(10)
 			.right()

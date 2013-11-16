@@ -49,8 +49,6 @@ public class PlayScreen extends BaseScreen {
 		UiApp app = context.app;
 		Events.subscribe(this);
 		
-//		mainTable.setBackground(app.skin.getDrawable("window1"));
-//		mainTable.setColor(Color.valueOf("4792A5"));
 		mainTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
 
 		Label actionPointsLabel = new Label("Action Points:", app.skin);
@@ -76,6 +74,7 @@ public class PlayScreen extends BaseScreen {
         setTurnPlayerLabel(context.network.getClientNickname());
         endTurnButton = new TextButton("End turn", app.skin);
         endTurnButton.addListener(endTurnButtonListener);
+        endTurnButton.setColor(Color.valueOf("808080"));
         endTurnButton.setVisible(false);
         turnTable.add(turnPlayerLabel).expandX().fill();
         turnTable.row();
@@ -87,6 +86,7 @@ public class PlayScreen extends BaseScreen {
         buttonsTable.setBackground(app.skin.getDrawable("window1"));
         
         buildTownhallButton = new TextButton("Townhall", app.skin);
+        buildTownhallButton .setColor(Color.valueOf("808080"));
         buildTownhallButton.addListener(buildTownhallButtonListener);
         Table buildTownhallTable = new Table(app.skin);
         Image buildTownhallImage = new Image(new TextureRegionDrawable(Assets.townhallTexture));
@@ -94,6 +94,7 @@ public class PlayScreen extends BaseScreen {
         buildTownhallTable.row();
         buildTownhallTable.add(buildTownhallButton);
         buildGoldmineButton = new TextButton("Goldmine", app.skin);
+        buildGoldmineButton.setColor(Color.valueOf("808080"));
         buildGoldmineButton.addListener(buildGoldmineButtonListener);
         Table buildGoldmineTable = new Table(app.skin);
         Image buildGoldmineImage = new Image(new TextureRegionDrawable(Assets.goldmineTexture));
@@ -101,6 +102,7 @@ public class PlayScreen extends BaseScreen {
         buildGoldmineTable.row();
         buildGoldmineTable.add(buildGoldmineButton);
         buildBarricadeButton = new TextButton("Barricade", app.skin);
+        buildBarricadeButton.setColor(Color.valueOf("808080"));
         buildBarricadeButton.addListener(buildBarricadeButtonListener);
         Table buildBarricadeTable = new Table(app.skin);
         Image buildBarricadeImage = new Image(new TextureRegionDrawable(Assets.barricadeTexture));
@@ -119,7 +121,6 @@ public class PlayScreen extends BaseScreen {
         Table boardTable = new Table(app.skin);
         boardTable.setBackground(app.skin.getDrawable("window1"));
         boardTable.setColor(Color.valueOf("335B3388"));
-//        boardTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
         boardTable.add(board).expand().fill();
         mainTable.add(boardTable).expand().fill().colspan(3);
         
@@ -184,6 +185,8 @@ public class PlayScreen extends BaseScreen {
 				
 				if (shouldSendCommand) {
 					if (field.building != null) {
+						field.building = null;
+						
 						ParticleSystem explodeBuilding = new ParticleSystem("explode.ps");
 						explodeBuilding.setPosition(
 								fieldActor.getX() + fieldActor.getWidth() / 2,
@@ -191,13 +194,17 @@ public class PlayScreen extends BaseScreen {
 						explodeBuilding.toFront();
 						board.addActor(explodeBuilding);
 					}
-
-					field.building = null;
-					field.owner = thisPlayerName;
+					else {
+						field.owner = thisPlayerName;	
+					}
+										
 					currentActionPoints -= ActionCost.CONQUER_EMPTY_FIELD;
 				}
 			}
-			else if (field.type.equals(Field.TYPE_GOLD) && currentActionPoints >= ActionCost.MINE_GOLD) {
+			else if (field.type.equals(Field.TYPE_GOLD) 
+					&& currentActionPoints >= ActionCost.MINE_GOLD
+					&& field.building != null
+					&& field.building.equals(Field.BUILDING_GOLDMINE)) {
 				commandType = CommandType.mine_gold;
 				shouldSendCommand = true;
 				currentActionPoints -= ActionCost.MINE_GOLD;
@@ -266,8 +273,13 @@ public class PlayScreen extends BaseScreen {
 	public void moveHandler(MoveMessage message) {
 		Field fld = context.map.getField(message.row, message.col);
 		if (message.what == CommandType.conquer) {	
-			if (fld.building != null) fld.building = null;
-			fld.owner = message.who;
+			// TODO: enable particle effect
+			if (fld.building != null) {
+				fld.building = null;
+			}
+			else {
+				fld.owner = message.who;
+			}
 		}
 		else if (message.what == CommandType.build_mine) {
 			fld.building = Field.BUILDING_GOLDMINE; 
