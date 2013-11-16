@@ -35,7 +35,7 @@ public class FieldActor extends Actor {
 	Vector2 rightPoint = new Vector2();
 	Vector2 centerPoint = new Vector2();
 	boolean isHovered = false;
-	public static final Color hoverColor = Color.valueOf("333333");
+	public static final Color hoverColor = Color.valueOf("33333333");
 
 		
 	public FieldActor(Context context, Field field, int rowIndex, int colIndex) {

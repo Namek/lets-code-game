@@ -47,9 +47,13 @@ public class PlayScreen extends BaseScreen {
 		UiApp app = context.app;
 		Events.subscribe(this);
 		
+//		mainTable.setBackground(app.skin.getDrawable("window1"));
+//		mainTable.setColor(Color.valueOf("4792A5"));
+		mainTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
+		
 		buildTownhallButton = new TextButton("Townhall", app.skin);
 		buildGoldmineButton = new TextButton("Goldmine", app.skin);
-		buildBarricadeButton = new TextButton("Barricade", app.skin);		
+		buildBarricadeButton = new TextButton("Barricade", app.skin);
 		
 		Label actionPointsLabel = new Label("Action Points:", app.skin);
 		actionPointsValueLabel = new Label("0", app.skin);
@@ -96,8 +100,8 @@ public class PlayScreen extends BaseScreen {
 		
         mainTable.row();
         Table boardTable = new Table(app.skin);
-        boardTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
-        boardTable.setColor(Color.valueOf("C5D8C5"));
+        boardTable.setBackground(app.skin.getDrawable("window1"));
+        boardTable.setColor(Color.valueOf("335B3388"));
         boardTable.add(board).expand().fill();
         mainTable.add(boardTable).expand().fill().colspan(3);
         
