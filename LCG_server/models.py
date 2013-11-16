@@ -44,6 +44,7 @@ class Player(object):
             'gold': self.gold
         }
 
+
 class Trujkont(object):
     owner = None
     building = None

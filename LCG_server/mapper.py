@@ -1,6 +1,6 @@
 import random
 
-from base import GameError
+from base import GameError, logger
 from models import Trujkont
 
 
@@ -21,10 +21,14 @@ class Mapper(object):
         self.map = arr
         # Missing
         for _ in range(int(self.rows*self.cols*self.MISSING)):
-            trujkont = None
-            while not trujkont:
+            valid_triangle = False
+            while not valid_triangle:
                 row = random.choice(arr)
                 trujkont = random.choice(row)
+                valid_triangle = (
+                    trujkont and
+                    len(trujkont.neighbours) == 3
+                )
             self.map[trujkont.row][trujkont.col] = None
         # Gold
         for _ in range(int(self.rows*self.cols*self.GOLD)):
@@ -44,10 +48,27 @@ class Mapper(object):
                 valid_triangle = (
                     not trujkont.resources and
                     not trujkont.owner and
-                    [t for t in trujkont.neighbours if not t.owner]
+                    1 < trujkont.row < self.rows-2 and
+                    1 < trujkont.col < self.cols-2 and
+                    len([t for t in trujkont.neighbours if not t.owner]) == 3
                 )
             trujkont.owner = p
             trujkont.building = 'townhall'
+        self._display()
+
+    def _display(self):
+        for row in self.map:
+            blah = []
+            for t in row:
+                if not t:
+                    blah.append(' ')
+                elif t.owner:
+                    blah.append('P')
+                elif t.resources:
+                    blah.append('g')
+                else:
+                    blah.append('.')
+            logger.debug(''.join(blah))
 
     def to_dict(self):
         return {

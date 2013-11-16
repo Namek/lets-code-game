@@ -69,6 +69,7 @@ class Handlers(object):
 
     def game_start(self, who, message):
         self.ovrs.mapper.generate()
+        self.ovrs.mapper._display()
         for p in self.ovrs.players:
             p.send('gameStarting', {'nickname': who.name})
             p.send('state', self.ovrs.mapper.to_dict())
@@ -122,10 +123,10 @@ class Handlers(object):
         self._build(who, trujkont, 'mine')
 
     def build_townhall(self, who, trujkont):
-        self._build(who, trujkont, 'mine')
+        self._build(who, trujkont, 'townhall')
 
     def build_barricade(self, who, trujkont):
-        self._build(who, trujkont, 'mine')
+        self._build(who, trujkont, 'barricade')
 
     def _build(self, who, trujkont, building):
         if trujkont.owner is not who:
