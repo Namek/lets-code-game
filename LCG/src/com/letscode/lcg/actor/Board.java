@@ -34,8 +34,6 @@ public class Board extends Group {
 			}
 		}
 		updateSizes();
-		
-		addListener(boardClickListener);
 	}
 	
 	
@@ -81,20 +79,28 @@ public class Board extends Group {
 		
 	}
 
-	private ClickListener boardClickListener = new ClickListener() {
-
-		@Override
-		public boolean isOver(Actor actor, float x, float y) {
+	@Override
+	public Actor hit(float x, float y, boolean touchable) {
+		Actor actor = super.hit(x, y, touchable);
+		
+		if (actor != null) {
 			if (actor instanceof FieldActor) {
 				FieldActor fieldActor = (FieldActor)actor; 
 				fieldActor.isHovered = true;
 				
-				if (hoveredFieldActor != null) {
-					fieldActor.isHovered = false;
+				if (fieldActor != hoveredFieldActor) {
+					if (hoveredFieldActor != null) {
+						hoveredFieldActor.isHovered = false;
+					}
+					hoveredFieldActor = fieldActor;
 				}
-				hoveredFieldActor = fieldActor;
 			}
-			return super.isOver(actor, x, y);
 		}
-	};
+		else if (hoveredFieldActor != null) {
+			hoveredFieldActor.isHovered = false;
+			hoveredFieldActor = null;
+		}
+		
+		return actor;
+	}
 }
