@@ -13,10 +13,12 @@ import com.letscode.ui.UiApp;
 
 public class LcgApp extends UiApp {
 	String hostname;
+	int port;
 	String nickname;
 	
-	public LcgApp(String hostname, String nickname) {
+	public LcgApp(String hostname, int port, String nickname) {
 		this.hostname = hostname;
+		this.port = port;
 		this.nickname = nickname;
 	}
 	
@@ -57,7 +59,7 @@ public class LcgApp extends UiApp {
 	@Override
 	protected BaseScreen getFirstScreen() {
 		Context context = new Context(this);
-		context.network.start(hostname, 80);
+		context.network.start(hostname, port);
 		context.network.sendHandshakeMessage(nickname);
 		context.colorsForPlayers.put(context.network.getClientNickname(), Color.BLUE);
 		
