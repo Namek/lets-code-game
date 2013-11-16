@@ -16,6 +16,6 @@ public class MainActivity extends AndroidApplication {
         cfg.useGL20 = false;
         String nickname = "Player " + (new Random().nextInt(12415124));
         
-        initialize(new LcgApp("localhost", nickname), cfg);
+        initialize(new LcgApp("localhost", 80, nickname), cfg);
     }
 }
