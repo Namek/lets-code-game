@@ -1,7 +1,5 @@
 package com.letscode.lcg.model;
 
-import sun.reflect.generics.tree.FieldTypeSignature;
-
 public class Map {
 	private Field[][] fields;
 	

@@ -209,6 +209,10 @@ public class PlayScreen extends BaseScreen {
 		}
 	}
 	
+	private void updateGoldAndActionPoints(int gold, int actionPoints) {
+		actionPointsValueLabel.setText(Integer.toString(actionPoints));
+		goldValueLabel.setText(Integer.toString(gold));
+	}
 	
 	///////////////////////////////////////////////
 	// Network Events
@@ -220,13 +224,13 @@ public class PlayScreen extends BaseScreen {
 	
 	@Handler
 	public void nextPlayerHandler(NextPlayerMessage message) {
-		System.out.println(message);
+		setTurnPlayerLabel(message.nickname);
 	}
 	
 	@Handler
 	public void yourTurnHandler(YourTurnMessage message) {
-		actionPointsValueLabel.setText(message.actionPoints.toString());
-		goldValueLabel.setText(message.gold.toString());
+        endTurnButton.setVisible(true);
+        updateGoldAndActionPoints(message.actionPoints, message.gold);
 	}
 	
 	@Handler
@@ -236,7 +240,7 @@ public class PlayScreen extends BaseScreen {
 	
 	@Handler
 	public void moveDoneHandler(MoveDoneMessage message) {
-		System.out.println(message);
+		updateGoldAndActionPoints(message.actionPoints, message.gold);
 	}
 	
 	///////////////////////////////////////////////
@@ -269,7 +273,7 @@ public class PlayScreen extends BaseScreen {
 	ClickListener boardListener = new ClickListener() {
 		@Override 
 		public void clicked(InputEvent event, float x, float y)  {
-			FieldActor fld = (FieldActor) event.getTarget();
+			FieldActor fld = event.getTarget() instanceof FieldActor ? (FieldActor) event.getTarget() : null;
 			if (fld != null) {
 				tryToMakeMove(fld);
 			}
@@ -277,7 +281,11 @@ public class PlayScreen extends BaseScreen {
 	};
 	
 	ClickListener endTurnButtonListener = new ClickListener() {
-		
+		@Override 
+		public void clicked(InputEvent event, float x, float y)  {
+			context.network.sendEndTurnMessage();
+			endTurnButton.setVisible(false);
+		}
 	};
 	
 	@Override

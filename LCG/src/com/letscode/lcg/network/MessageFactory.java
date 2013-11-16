@@ -1,12 +1,12 @@
 package com.letscode.lcg.network;
 
 import com.letscode.lcg.enums.CommandType;
+import com.letscode.lcg.network.messages.EndTurnMessage;
 import com.letscode.lcg.network.messages.GameStartMessage;
 import com.letscode.lcg.network.messages.HandshakeMessage;
 import com.letscode.lcg.network.messages.MakeMoveMessage;
 import com.letscode.lcg.network.messages.MessageBase;
 import com.letscode.lcg.network.messages.MessageEnvelope;
-import com.letscode.lcg.network.messages.NextTurnMessage;
 
 public class MessageFactory {
 	private static MessageEnvelope packageMessage(MessageBase message, String type) {
@@ -34,7 +34,7 @@ public class MessageFactory {
 		return packageMessage(msg, "makeMove");
 	}
 	
-	public static MessageEnvelope createNextTurnMessage() {
-		return packageMessage(new NextTurnMessage(), "nextTurn");
+	public static MessageEnvelope createEndTurnMessage() {
+		return packageMessage(new EndTurnMessage(), "endTurn");
 	}
 }
