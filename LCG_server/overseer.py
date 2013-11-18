@@ -17,6 +17,7 @@ class Overseer(object):
         self.mapper = Mapper(self, *map_size)
 
     def handle(self, socket, addr):
+        logger.info('Using overseer %s' % id(self))
         fp = socket.makefile()
         player = Player(fp, addr)
         enter_teh_infiniteh_loopah = True
@@ -26,7 +27,7 @@ class Overseer(object):
             )
             logger.info('Delegating %s to new overseer...' % player.id)
             self.lcg.new_overseer()
-            return self.lcg.overseer.handle(socket, addr)
+            return self.lcg.redirect_to_overseer(socket, addr)
         logger.info('%s connected' % player.id)
         while enter_teh_infiniteh_loopah:
             try:

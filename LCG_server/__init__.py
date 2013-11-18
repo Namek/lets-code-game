@@ -6,7 +6,7 @@ from overseer import Overseer
 class LCG(object):
     def __init__(self, host, port, map_size):
         self.map_size = map_size
-        self.server = StreamServer((host, port), None)
+        self.server = StreamServer((host, port), self.redirect_to_overseer)
 
     def serve(self):
         self.new_overseer()
@@ -14,4 +14,6 @@ class LCG(object):
 
     def new_overseer(self):
         self.overseer = Overseer(self, self.map_size)
-        self.server.handle = self.overseer.handle
+
+    def redirect_to_overseer(self, socket, addr):
+        return self.overseer.handle(socket, addr)
