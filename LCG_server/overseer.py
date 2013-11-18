@@ -1,4 +1,6 @@
 from socket import error as socketerror
+from base64 import b64encode
+import hashlib
 import json
 
 from base import logger, GameError, ServerError
@@ -35,14 +37,44 @@ class Overseer(object):
             except socketerror:
                 break
             line = line.strip()
-            if not line:
+            if not line and player.websocket is False:
                 break
             logger.debug('%s -> %s' % (player.id, line))
             try:
                 parsed = json.loads(line)
+                player.websocket = False
             except ValueError:
-                player.exception('What the hell are you sending to me?')
-                continue
+                # is it websocket?
+                is_websocket = (
+                    player.websocket is None and
+                    line == ' GET / HTTP/1.1'
+                )
+                if is_websocket:
+                    # loop!
+                    jezusmaria = True
+                    while True:
+                        try:
+                            line = fp.readline()
+                        except socketerror:
+                            jezusmaria = False
+                            break
+                        if line.startswith('Sec-WebSocket-Key:'):
+                            key = line.split(' ')[1]
+                            key += '258EAFA5-E914-47DA-95CA-C5AB0DC85B11'
+                            key = b64encode(hashlib.sha1(key).hexdigest())
+                        if line == '\r\n':
+                            fp.write('HTTP/1.1 101 Switching Protocols\r\n')
+                            fp.write('Upgrade: websocket\r\n')
+                            fp.write('Connection: Upgrade\r\n')
+                            fp.write('Sec-WebSocket-Accept: %s\r\n' % key)
+                            fp.write('Sec-WebSocket-Protocol: chat\r\n\r\n')
+                            player.websocket = False
+                            break
+                    if not jezusmaria:
+                        break
+                else:
+                    player.exception('What the hell are you sending to me?')
+                    continue
             try:
                 self.delegate(player, parsed)
             except (GameError, ServerError) as e:
