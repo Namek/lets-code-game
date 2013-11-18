@@ -61,7 +61,7 @@ class Overseer(object):
                         if line.lower().startswith('sec-websocket-key:'):
                             key = line.split(' ')[1]
                             key += '258EAFA5-E914-47DA-95CA-C5AB0DC85B11'
-                            key = b64encode(hashlib.sha1(key).hexdigest())
+                            key = b64encode(hashlib.sha1(key).digest())
                         if line == '':
                             break
                     if key:
@@ -70,7 +70,7 @@ class Overseer(object):
                         fp.write('Connection: Upgrade\r\n')
                         fp.write('Sec-WebSocket-Accept: %s\r\n' % key)
                         fp.write('Sec-WebSocket-Protocol: chat\r\n\r\n')
-                        fp.write('xD\r\n')
+                        fp.flush()
                         continue
                     else:
                         break
