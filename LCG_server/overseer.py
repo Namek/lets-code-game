@@ -8,11 +8,11 @@ from models import Player
 
 
 class Overseer(object):
-    _players = []
-    current_player_index = None
-    game_started = False
-
-    def __init__(self, map_size):
+    def __init__(self, lcg, map_size):
+        self.current_player_index = None
+        self.game_started = False
+        self._players = []
+        self.lcg = lcg
         self.handlers = Handlers(self)
         self.mapper = Mapper(self, *map_size)
 
@@ -22,9 +22,11 @@ class Overseer(object):
         enter_teh_infiniteh_loopah = True
         if self.game_started:
             logger.info(
-                '%s tried to connect, but game already started' % player.id
+                '%s tried to connect, but game has already started' % player.id
             )
-            enter_teh_infiniteh_loopah = False
+            logger.info('Delegating %s to new overseer...' % player.id)
+            self.lcg.new_overseer()
+            return self.lcg.overseer.handle(socket, addr)
         logger.info('%s connected' % player.id)
         while enter_teh_infiniteh_loopah:
             try:

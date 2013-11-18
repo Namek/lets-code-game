@@ -6,9 +6,9 @@ class Handlers(object):
     COST = {  # action points, gold
         'conquer': (2, 0),
         'mine_gold': (3, 0),
-        'build_townhall': (7, 600),
-        'build_mine': (6, 400),
-        'build_barricade': (4, 150),
+        'build_townhall': (0, 600),
+        'build_mine': (0, 400),
+        'build_barricade': (0, 150),
     }
     DO_NOT_NOTIFY = [
         'mine_gold'
@@ -70,6 +70,7 @@ class Handlers(object):
     def game_start(self, who, message):
         self.ovrs.mapper.generate()
         self.ovrs.mapper._display()
+        self.ovrs.game_started = True
         for p in self.ovrs.players:
             p.send('gameStarting', {'nickname': who.name})
             p.send('state', self.ovrs.mapper.to_dict())
