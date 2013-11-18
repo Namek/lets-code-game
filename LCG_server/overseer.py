@@ -37,40 +37,42 @@ class Overseer(object):
             except socketerror:
                 break
             line = line.strip()
-            if not line and player.websocket is False:
+            if not line:
                 break
             logger.debug('%s -> %s' % (player.id, line))
             try:
                 parsed = json.loads(line)
-                player.websocket = False
             except ValueError:
                 # is it websocket?
                 is_websocket = (
-                    player.websocket is None and
-                    line == ' GET / HTTP/1.1'
+                    not player.websocket_checked and
+                    line == 'GET / HTTP/1.1'
                 )
                 if is_websocket:
+                    player.websocket_checked = True
                     # loop!
-                    jezusmaria = True
+                    key = None
                     while True:
                         try:
-                            line = fp.readline()
+                            line = fp.readline().strip()
+                            logger.debug(line)
                         except socketerror:
-                            jezusmaria = False
                             break
-                        if line.startswith('Sec-WebSocket-Key:'):
+                        if line.lower().startswith('sec-websocket-key:'):
                             key = line.split(' ')[1]
                             key += '258EAFA5-E914-47DA-95CA-C5AB0DC85B11'
                             key = b64encode(hashlib.sha1(key).hexdigest())
-                        if line == '\r\n':
-                            fp.write('HTTP/1.1 101 Switching Protocols\r\n')
-                            fp.write('Upgrade: websocket\r\n')
-                            fp.write('Connection: Upgrade\r\n')
-                            fp.write('Sec-WebSocket-Accept: %s\r\n' % key)
-                            fp.write('Sec-WebSocket-Protocol: chat\r\n\r\n')
-                            player.websocket = False
+                        if line == '':
                             break
-                    if not jezusmaria:
+                    if key:
+                        fp.write('HTTP/1.1 101 Switching Protocols\r\n')
+                        fp.write('Upgrade: websocket\r\n')
+                        fp.write('Connection: Upgrade\r\n')
+                        fp.write('Sec-WebSocket-Accept: %s\r\n' % key)
+                        fp.write('Sec-WebSocket-Protocol: chat\r\n\r\n')
+                        fp.write('xD\r\n')
+                        continue
+                    else:
                         break
                 else:
                     player.exception('What the hell are you sending to me?')

@@ -8,7 +8,7 @@ class Player(object):
     addr = None
     action_points = 0
     gold = 500
-    websocket = False
+    websocket_checked = False
 
     def __init__(self, fp, addr):
         self.fp = fp
