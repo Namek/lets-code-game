@@ -18,10 +18,13 @@ class Overseer(object):
         self.handlers = Handlers(self)
         self.mapper = Mapper(self, *map_size)
 
-    def handle(self, socket, addr):
+    def handle(self, environ, start_response):
         logger.info('Using overseer %s' % id(self))
-        fp = socket.makefile()
-        player = Player(fp, addr)
+        socket = environ["wsgi.websocket"]
+   
+        logger.debug(socket.__dict__)
+        #fp = socket.makefile()
+        player = Player(socket, start_response)
         enter_teh_infiniteh_loopah = True
         if self.game_started:
             logger.info(
@@ -29,11 +32,11 @@ class Overseer(object):
             )
             logger.info('Delegating %s to new overseer...' % player.id)
             self.lcg.new_overseer()
-            return self.lcg.redirect_to_overseer(socket, addr)
+            return self.lcg.redirect_to_overseer(environ, start_response)
         logger.info('%s connected' % player.id)
         while enter_teh_infiniteh_loopah:
             try:
-                line = fp.readline()
+                line = socket.receive()
             except socketerror:
                 break
             line = line.strip()
@@ -54,7 +57,7 @@ class Overseer(object):
                     key = None
                     while True:
                         try:
-                            line = fp.readline().strip()
+                            line = socket.receive().strip()
                             logger.debug(line)
                         except socketerror:
                             break
@@ -85,7 +88,7 @@ class Overseer(object):
                 continue
         self.remove_player(player)
         try:
-            socket.shutdown(0)
+            #socket.shutdown(0)
             socket.close()
         except socketerror:  # whatever, I no more care about this socket
             pass

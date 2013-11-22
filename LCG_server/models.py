@@ -5,18 +5,19 @@ from base import logger
 
 class Player(object):
     name = None
+    socket = None
     addr = None
     action_points = 0
     gold = 500
     websocket_checked = False
 
-    def __init__(self, fp, addr):
-        self.fp = fp
-        self.addr = addr
+    def __init__(self, socket, start_response):
+        self.socket = socket
+        #self.addr = socket.peer
 
     @property
     def id(self):
-        return self.name or '%s:%s' % self.addr
+        return self.name #or '%s:%s' % self.addr
 
     def _event_name(self, what):
         event = '%s%s' % (what[0].upper(), what[1:])
@@ -32,8 +33,7 @@ class Player(object):
             'message': message
         })
         logger.debug('%s <- %s' % (self.id, to_send))
-        self.fp.write(to_send + '\n')
-        self.fp.flush()
+        self.socket.send(to_send + '\n')
 
     def exception(self, e):
         self.send('exception', {'reason': str(e)})
