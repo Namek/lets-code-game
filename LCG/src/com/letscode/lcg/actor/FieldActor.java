@@ -1,7 +1,11 @@
 package com.letscode.lcg.actor;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -9,9 +13,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-
 import com.letscode.lcg.Assets;
 import com.letscode.lcg.Context;
 import com.letscode.lcg.model.Field;
@@ -74,9 +75,11 @@ public class FieldActor extends Actor {
 			rightPoint.set(w, h);
 		}
 	}
+	
+	
 		
 	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
+	public void draw(Batch batch, float parentAlpha) {
 		ShapeRenderer shapeRenderer = context.shapeRenderer;
 		sizeChanged();
 		localToStageCoordinates(tmpPos.set(0, 0));
@@ -139,7 +142,7 @@ public class FieldActor extends Actor {
 		}
 	}
 	
-	private void drawTextureOnField(TextureRegion texture, SpriteBatch batch) {
+	private void drawTextureOnField(TextureRegion texture, Batch batch) {
 		float tw = texture.getRegionWidth();
 		float th = texture.getRegionHeight();
 		

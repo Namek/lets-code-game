@@ -1,7 +1,7 @@
 package com.letscode.lcg.network.messages;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.utils.Array;
 
 public class PlayerListMessage extends MessageBase {
-	public ArrayList<String> players;
+	public Array<String> players;
 }

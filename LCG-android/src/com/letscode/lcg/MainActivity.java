@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.letscode.lcg.network.WebSocketClientInterface;
+import com.letscode.lcg.network.WebSocketJavaClient;
 
 public class MainActivity extends AndroidApplication {
     @Override
@@ -15,8 +17,9 @@ public class MainActivity extends AndroidApplication {
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
         cfg.useWakelock = true;
-        String nickname = "Android Player " + (new Random().nextInt(12415124));
         
-        initialize(new LcgApp(null, 0, nickname), cfg);
+        WebSocketClientInterface networkImpl = new WebSocketJavaClient();
+        
+        initialize(new LcgApp(networkImpl, LcgApp.DEFAULT_HOSTNAME, LcgApp.DEFAULT_PORT), cfg);
     }
 }

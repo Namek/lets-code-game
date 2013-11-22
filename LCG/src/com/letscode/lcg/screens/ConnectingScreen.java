@@ -1,9 +1,7 @@
 package com.letscode.lcg.screens;
 
-import java.util.ArrayList;
 import java.util.Collections;
-
-import net.engio.mbassy.listener.Handler;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.TextInputListener;
@@ -16,25 +14,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.letscode.lcg.Context;
 import com.letscode.lcg.model.Map;
-import com.letscode.lcg.network.Events;
+import com.letscode.lcg.network.EventsInterface;
+import com.letscode.lcg.network.GameMessageListener;
+import com.letscode.lcg.network.messages.MessageBase;
 import com.letscode.lcg.network.messages.PlayerJoinedMessage;
 import com.letscode.lcg.network.messages.PlayerLeftMessage;
 import com.letscode.lcg.network.messages.PlayerListMessage;
 import com.letscode.lcg.network.messages.StateMessage;
-import com.letscode.ui.BaseScreen;
+import com.letscode.lcg.ui.BaseScreen;
 
-public class ConnectingScreen extends BaseScreen {
+public class ConnectingScreen extends BaseScreen implements GameMessageListener {
 	private Context context;
 	private Table playerList = new Table();
 	private Button startGameButton;
 	
-	public ConnectingScreen(final Context context, final String defaultNickname, final String defaultHostname, final int defaultPort) {
+	public ConnectingScreen(){
+		super(null);
+	}
+	
+	public ConnectingScreen(final Context context, final String givenHostname, final int givenPort) {
 		super(context.app);
 		this.context = context;
-		Events.subscribe(this);
+
+		EventsInterface.subscribe(this);
 		
 		mainTable.setBackground(app.skin.getDrawable("window1"));
 		mainTable.setColor(Color.valueOf("4792A5"));
@@ -68,8 +74,21 @@ public class ConnectingScreen extends BaseScreen {
 			.fill()
 			.top();
 		
-		if (defaultHostname != null && defaultPort > 0 && defaultNickname != null) {
-			connectToServer(defaultHostname, defaultPort, defaultNickname);
+		final String randomNickname = "Player " + (new Random().nextInt(25124123));
+		
+		if (givenHostname != null && givenPort > 0) {
+			// Ask for nickname
+			Gdx.input.getTextInput(new TextInputListener() {
+				@Override
+				public void input(String nickname) {
+					connectToServer(givenHostname, givenPort, nickname);
+				}
+			
+				@Override
+				public void canceled() {
+					Gdx.app.exit();
+				}
+			}, "Nickname:", randomNickname);
 		}
 		else {
 			// Ask for hostname
@@ -91,14 +110,14 @@ public class ConnectingScreen extends BaseScreen {
 								public void canceled() {
 									Gdx.app.exit();
 								}
-							}, "Nickname:", defaultNickname);
+							}, "Nickname:", randomNickname);
 						}
 						
 						@Override
 						public void canceled() {
 							Gdx.app.exit();
 						}
-					}, "Port:", new Integer(defaultPort).toString());
+					}, "Port:", new Integer(givenPort).toString());
 				}
 	
 				@Override
@@ -106,54 +125,67 @@ public class ConnectingScreen extends BaseScreen {
 					Gdx.app.exit();
 				}
 				
-			}, "Hostname:", defaultHostname);
+			}, "Hostname:", givenHostname);
 		}
 	}
-	
+
 	private void connectToServer(String hostname, int port, String nickname) {
 		context.network.start(hostname, port);
 		context.network.sendHandshakeMessage(nickname);
 		context.colorsForPlayers.put(context.network.getClientNickname(), Color.BLUE);
 	}
 
-	@Handler
+
+	@Override
+	public void onMessageReceived(MessageBase message) {
+		if (message instanceof PlayerJoinedMessage) {
+			playerJoinedHandler((PlayerJoinedMessage)message);
+		}
+		else if (message instanceof PlayerLeftMessage) {
+			playerLeftHandler((PlayerLeftMessage)message);
+		}
+		else if (message instanceof PlayerListMessage) {
+			playerListHandler((PlayerListMessage)message);
+		}
+		else if (message instanceof StateMessage) {
+			stateHandler((StateMessage)message);
+		}
+	}
+
+	
 	public void playerJoinedHandler(PlayerJoinedMessage message) {
 		playerList.add(new Label(message.nickname, context.app.skin))
 			.row();
 	}
 	
-	@Handler
 	public void playerLeftHandler(PlayerLeftMessage message) {
 		SnapshotArray<Actor> playerLabels = playerList.getChildren();
 		for (int i = 0; i < playerLabels.size; ++i) {
 			Label lbl = (Label)playerLabels.get(i);
-			if (lbl.getText().equals(message.nickname)) {
+			String labelText = lbl.getText().toString();
+			if (labelText.equals(message.nickname)) {
 				playerList.removeActor(lbl);
 				break;
 			}
 		}
 	}
 	
-	@Handler
 	public void playerListHandler(PlayerListMessage message) {
 		for (String nickname : message.players) {
 			playerList.add(new Label(nickname, context.app.skin))
 				.row();	
 		}
-		
-		if (message.players.size() != 1)
-			startGameButton.setVisible(false);
 	}
 	
-	@Handler
 	public void stateHandler(StateMessage message) {
 		mapPlayerNamesToColors();
 		message.convertJsonToModel();
 		context.map = new Map(message.fields);
 		context.app.switchScreens(new PlayScreen(context));
 		
-		Events.unsubscribe(this);
+		EventsInterface.unsubscribe(this);
 	}
+	
 	
 	@Override
 	public void act(float delta) {
@@ -163,15 +195,15 @@ public class ConnectingScreen extends BaseScreen {
 	
 	@Override
 	public void onBackPress() {	
-		
+		Gdx.app.exit();
 	}
 	
 	private void mapPlayerNamesToColors() {
 		context.colorsForPlayers.clear();
 		context.colorsForPlayers.put(null, Color.WHITE);
-		ArrayList<String> players = context.network.getPlayers();
-		Collections.sort(players);
-		for (int i = 0; i < players.size(); ++i) {
+		Array<String> players = context.network.getPlayers();
+		players.sort();
+		for (int i = 0; i < players.size; ++i) {
 			context.colorsForPlayers.put(players.get(i), context.colors[i + 1]);
 		}
 	}

@@ -1,7 +1,5 @@
 package com.letscode.lcg.screens;
 
-import net.engio.mbassy.listener.Handler;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -24,16 +22,18 @@ import com.letscode.lcg.enums.BuildMode;
 import com.letscode.lcg.enums.BuildingGoldCost;
 import com.letscode.lcg.enums.CommandType;
 import com.letscode.lcg.model.Field;
-import com.letscode.lcg.network.Events;
+import com.letscode.lcg.network.EventsInterface;
+import com.letscode.lcg.network.GameMessageListener;
 import com.letscode.lcg.network.messages.GameEndMessage;
+import com.letscode.lcg.network.messages.MessageBase;
 import com.letscode.lcg.network.messages.MoveDoneMessage;
 import com.letscode.lcg.network.messages.MoveMessage;
 import com.letscode.lcg.network.messages.NextPlayerMessage;
 import com.letscode.lcg.network.messages.YourTurnMessage;
-import com.letscode.ui.BaseScreen;
-import com.letscode.ui.UiApp;
+import com.letscode.lcg.ui.BaseScreen;
+import com.letscode.lcg.ui.UiApp;
 
-public class PlayScreen extends BaseScreen {
+public class PlayScreen extends BaseScreen implements GameMessageListener {
 	Context context;	
 	
 	Button endTurnButton;
@@ -46,7 +46,8 @@ public class PlayScreen extends BaseScreen {
 		super(context.app);
 		this.context = context;
 		UiApp app = context.app;
-		Events.subscribe(this);
+		
+		EventsInterface.subscribe(this);
 		
 		mainTable.setBackground(new TextureRegionDrawable(Assets.backgroundTexture));
 
@@ -271,7 +272,26 @@ public class PlayScreen extends BaseScreen {
 	///////////////////////////////////////////////
 	// Network Events
 	//
-	@Handler
+
+	@Override
+	public void onMessageReceived(MessageBase message) {
+		if (message instanceof MoveMessage) {
+			moveHandler((MoveMessage)message);
+		}
+		else if (message instanceof NextPlayerMessage) {
+			nextPlayerHandler((NextPlayerMessage)message);
+		}
+		else if (message instanceof YourTurnMessage) {
+			yourTurnHandler((YourTurnMessage)message);
+		}
+		else if (message instanceof GameEndMessage) {
+			gameEndHandler((GameEndMessage) message);
+		}
+		else if (message instanceof MoveDoneMessage) {
+			moveDoneHandler((MoveDoneMessage)message);
+		}
+	}
+	
 	public void moveHandler(MoveMessage message) {
 		Field fld = context.map.getField(message.row, message.col);
 		if (message.what == CommandType.conquer) {	
@@ -294,31 +314,28 @@ public class PlayScreen extends BaseScreen {
 		}
 	}
 	
-	@Handler
 	public void nextPlayerHandler(NextPlayerMessage message) {
 		setTurnPlayerLabel(message.nickname);
 		endTurnButton.setVisible(false);
 	}
 	
-	@Handler
 	public void yourTurnHandler(YourTurnMessage message) {
         endTurnButton.setVisible(true);
         updateGoldAndActionPoints(message.actionPoints, message.gold);
         setTurnPlayerLabel(context.getPlayerNickname());
 	}
 	
-	@Handler
-	public void endGameMessage(GameEndMessage message) {
+	public void gameEndHandler(GameEndMessage message) {
 		app.switchScreens(new GameResultScreen(context, message.winner));
 	}
-	
-	@Handler
+
 	public void moveDoneHandler(MoveDoneMessage message) {
 		updateGoldAndActionPoints(message.actionPoints, message.gold);
 		if (message.actionPoints == 0) {
 			endTurnButton.setVisible(false);
 		}
 	}
+	
 	
 	///////////////////////////////////////////////
 	// GUI Events

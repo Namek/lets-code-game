@@ -2,18 +2,19 @@ package com.letscode.lcg.network.messages;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.letscode.lcg.model.Field;
 
 public class StateMessage extends MessageBase {
 	public Field[][] fields;
-	private ArrayList<ArrayList<JsonValue>> map;
+	private Array<Array<JsonValue>> map;
 	
 	public void convertJsonToModel() {
-		final int numRows = map.size();
-		fields = new Field[numRows][map.get(0).size()];
+		final int numRows = map.size;
+		fields = new Field[numRows][map.get(0).size];
 		for (int row = 0; row < numRows; ++row) {
-			final int numCols = map.get(0).size();
+			final int numCols = map.get(0).size;
 			for (int col = 0; col < numCols; ++col) {
 				if (map.get(row).get(col) != null) {
 					Field fld = new Field();

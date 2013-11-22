@@ -6,20 +6,29 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.letscode.lcg.network.EventsInterface;
+import com.letscode.lcg.network.WebSocketClientInterface;
+import com.letscode.lcg.network.WebSocketClientInterface.Listener;
 import com.letscode.lcg.screens.ConnectingScreen;
-import com.letscode.ui.BaseScreen;
-import com.letscode.ui.Styles;
-import com.letscode.ui.UiApp;
+import com.letscode.lcg.screens.ErrorScreen;
+import com.letscode.lcg.ui.BaseScreen;
+import com.letscode.lcg.ui.Styles;
+import com.letscode.lcg.ui.UiApp;
 
 public class LcgApp extends UiApp {
+	WebSocketClientInterface networkImpl;
 	String hostname;
 	int port;
-	String nickname;
 	
-	public LcgApp(String hostname, int port, String nickname) {
+	// TODO would be better to have it in asset file
+	public static final String DEFAULT_HOSTNAME = "178.32.225.209";
+	public static final int DEFAULT_PORT = 34567;
+	
+	
+	public LcgApp(WebSocketClientInterface networkImpl, String hostname, int port) {
+		this.networkImpl = networkImpl;
 		this.hostname = hostname;
 		this.port = port;
-		this.nickname = nickname;
 	}
 	
 	@Override
@@ -42,6 +51,12 @@ public class LcgApp extends UiApp {
 	}
 
 	@Override
+	public void render() {
+		EventsInterface.update();
+		super.render();
+	}
+
+	@Override
 	protected String atlasPath() {
 		return "data/tex.atlas";
 	}
@@ -58,8 +73,29 @@ public class LcgApp extends UiApp {
 
 	@Override
 	protected BaseScreen getFirstScreen() {
-		Context context = new Context(this);
+		final Context context = new Context(this, networkImpl);
 		
-		return new ConnectingScreen(context, nickname, hostname, port);
+		networkImpl.addListener(new Listener() {
+			@Override
+			public void onMessageReceived(String message) {	
+			}
+			
+			@Override
+			public void onError() {
+				context.app.switchScreens(new ErrorScreen(context));
+			}
+			
+			@Override
+			public void onDisconnected() {
+				context.app.switchScreens(new ErrorScreen(context));
+			}
+			
+			@Override
+			public void onConnected() {
+			}
+		});
+		
+		BaseScreen screen = new ConnectingScreen(context, hostname, port);
+		return screen;
 	}
 }

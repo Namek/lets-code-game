@@ -2,13 +2,13 @@ package com.letscode.lcg.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.letscode.lcg.Assets;
 import com.letscode.lcg.Context;
 import com.letscode.lcg.actor.ParticleSystem;
-import com.letscode.ui.BaseScreen;
+import com.letscode.lcg.ui.BaseScreen;
 
 public class GameResultScreen extends BaseScreen {
 
@@ -51,7 +51,7 @@ public class GameResultScreen extends BaseScreen {
 	};
 	
 	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
+	public void draw(Batch batch, float parentAlpha) {
 		batch.setColor(hasPlayerWon ? wonBackgroundTintColor : lostBackgroundTintColor);
 		batch.draw(Assets.backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		super.draw(batch, parentAlpha);
