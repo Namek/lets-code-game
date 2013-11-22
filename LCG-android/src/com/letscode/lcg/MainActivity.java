@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.letscode.lcg.network.WebSocketClientInterface;
-import com.letscode.lcg.network.WebSocketJavaClient;
 
 public class MainActivity extends AndroidApplication {
     @Override
