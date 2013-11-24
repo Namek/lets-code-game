@@ -13,11 +13,11 @@ class Player(object):
 
     def __init__(self, socket, start_response):
         self.socket = socket
-        #self.addr = socket.peer
+        self.addr = socket.socket.getpeername()
 
     @property
     def id(self):
-        return self.name #or '%s:%s' % self.addr
+        return self.name or '%s:%s' % self.addr
 
     def _event_name(self, what):
         event = '%s%s' % (what[0].upper(), what[1:])

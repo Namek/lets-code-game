@@ -1,4 +1,3 @@
-from gevent.server import StreamServer
 from gevent import pywsgi
 from geventwebsocket.handler import WebSocketHandler
 
@@ -8,8 +7,11 @@ from overseer import Overseer
 class LCG(object):
     def __init__(self, host, port, map_size):
         self.map_size = map_size
-        #self.server = StreamServer((host, port), self.redirect_to_overseer)
-        self.server = pywsgi.WSGIServer((host, port), self.redirect_to_overseer, handler_class=WebSocketHandler)
+        self.server = pywsgi.WSGIServer(
+            (host, port),
+            self.redirect_to_overseer,
+            handler_class=WebSocketHandler
+        )
 
     def serve(self):
         self.new_overseer()

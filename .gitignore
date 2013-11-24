@@ -5,3 +5,5 @@ Scripts
 Include
 *.sublime-workspace
 *.pyc
+build/gevent
+build/gevent-websocket

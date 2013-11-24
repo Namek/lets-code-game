@@ -1,6 +1,4 @@
 from socket import error as socketerror
-from base64 import b64encode
-import hashlib
 import json
 
 from base import logger, GameError, ServerError
@@ -21,9 +19,7 @@ class Overseer(object):
     def handle(self, environ, start_response):
         logger.info('Using overseer %s' % id(self))
         socket = environ["wsgi.websocket"]
-   
         logger.debug(socket.__dict__)
-        #fp = socket.makefile()
         player = Player(socket, start_response)
         enter_teh_infiniteh_loopah = True
         if self.game_started:
@@ -39,6 +35,8 @@ class Overseer(object):
                 line = socket.receive()
             except socketerror:
                 break
+            if not line:
+                break
             line = line.strip()
             if not line:
                 break
@@ -46,40 +44,8 @@ class Overseer(object):
             try:
                 parsed = json.loads(line)
             except ValueError:
-                # is it websocket?
-                is_websocket = (
-                    not player.websocket_checked and
-                    line == 'GET / HTTP/1.1'
-                )
-                if is_websocket:
-                    player.websocket_checked = True
-                    # loop!
-                    key = None
-                    while True:
-                        try:
-                            line = socket.receive().strip()
-                            logger.debug(line)
-                        except socketerror:
-                            break
-                        if line.lower().startswith('sec-websocket-key:'):
-                            key = line.split(' ')[1]
-                            key += '258EAFA5-E914-47DA-95CA-C5AB0DC85B11'
-                            key = b64encode(hashlib.sha1(key).digest())
-                        if line == '':
-                            break
-                    if key:
-                        fp.write('HTTP/1.1 101 Switching Protocols\r\n')
-                        fp.write('Upgrade: websocket\r\n')
-                        fp.write('Connection: Upgrade\r\n')
-                        fp.write('Sec-WebSocket-Accept: %s\r\n' % key)
-                        fp.write('Sec-WebSocket-Protocol: chat\r\n\r\n')
-                        fp.flush()
-                        continue
-                    else:
-                        break
-                else:
-                    player.exception('What the hell are you sending to me?')
-                    continue
+                player.exception('What the hell are you sending to me?')
+                continue
             try:
                 self.delegate(player, parsed)
             except (GameError, ServerError) as e:
@@ -88,7 +54,6 @@ class Overseer(object):
                 continue
         self.remove_player(player)
         try:
-            #socket.shutdown(0)
             socket.close()
         except socketerror:  # whatever, I no more care about this socket
             pass
