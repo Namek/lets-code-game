@@ -7,6 +7,6 @@ This thing is based on libgdx + Java for client and Python for server. Optimized
 
 # Wowz
 
-![](http://pl.sii.eu/letscode/img/aplikacje/11/11_1_fullscreen.jpg)
-![](http://pl.sii.eu/letscode/img/aplikacje/11/11_2_fullscreen.jpg)
-![](http://pl.sii.eu/letscode/img/aplikacje/11/11_3_fullscreen.jpg)
+![gameplay](/screenshots/lcg1.jpg?raw=true)
+![waiting for other players](/screenshots/lcg2.jpg?raw=true)
+![you have won](/screenshots/lcg3.jpg?raw=true)
